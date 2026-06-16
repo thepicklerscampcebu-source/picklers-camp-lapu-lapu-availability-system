@@ -5,16 +5,23 @@ body{
 
 .container{
   display:flex;
-  gap:30px;
+  gap:40px;
   align-items:flex-start;
 }
 
 .left-panel{
-  width:250px;
+  width:280px;
+  flex-shrink:0;
+
+  position:sticky;
+  top:20px;
+
+  align-self:flex-start;
 }
 
 .right-panel{
   flex:1;
+  overflow-x:auto;
 }
 
 table{
@@ -25,7 +32,8 @@ table{
 th, td{
   border:1px solid #ddd;
   text-align:center;
-  padding:12px;
+
+  padding:10px;
 }
 
 th{
@@ -70,7 +78,13 @@ button{
 
 
 .calendar{
-  width:250px;
+  border:1px solid #ddd;
+  border-radius:15px;
+  padding:20px;
+  background:white;
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.08);
 }
 
 .calendar-header{
@@ -80,7 +94,31 @@ button{
   margin-bottom:15px;
 }
 
+.calendar-header button{
+  margin-top:0;
+  padding:5px;
+
+  background:transparent;
+  color:#999;
+
+  border:none;
+  border-radius:0;
+
+  font-size:20px;
+  cursor:pointer;
+}
+
+.calendar-header button:hover{
+  color:#333;
+}
+
+#monthYear{
+  font-size:18px;
+  margin:0;
+}
+
 .weekdays{
+  font-size:13px;
   display:grid;
   grid-template-columns:repeat(7,1fr);
   text-align:center;
@@ -95,10 +133,18 @@ button{
 }
 
 .day{
-  padding:12px;
+  height:36px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:14px;
+
   border-radius:8px;
-  text-align:center;
+
   cursor:pointer;
+
   border:1px solid #ddd;
 }
 
@@ -109,8 +155,9 @@ button{
 .selected-day{
   background:#52c41a;
   color:white;
+  font-weight:bold;
 }
 
 .today{
-  border:2px solid #1677ff;
+  border:2px solid #52c41a;
 }
