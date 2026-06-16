@@ -67,3 +67,50 @@ button{
   border-radius:8px;
   cursor:pointer;
 }
+
+
+.calendar{
+  width:250px;
+}
+
+.calendar-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.weekdays{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+#calendarDays{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.day{
+  padding:12px;
+  border-radius:8px;
+  text-align:center;
+  cursor:pointer;
+  border:1px solid #ddd;
+}
+
+.day:hover{
+  background:#d9f7be;
+}
+
+.selected-day{
+  background:#52c41a;
+  color:white;
+}
+
+.today{
+  border:2px solid #1677ff;
+}
