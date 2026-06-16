@@ -7,6 +7,7 @@ body{
   display:flex;
   gap:40px;
   align-items:flex-start;
+  flex-wrap:wrap;
 }
 
 .left-panel{
@@ -21,7 +22,11 @@ body{
 
 .right-panel{
   flex:1;
-  overflow-x:auto;
+}
+
+.right-panel h2{
+  margin-top:10px;
+  margin-bottom:10px;
 }
 
 table{
@@ -81,6 +86,14 @@ button{
   display:flex;
   flex-direction:column;
   gap:10px;
+
+  overflow-x:auto;
+  max-width:100%;
+}
+
+
+.schedule-wrapper{
+  min-width:650px;
 }
 
 
@@ -218,6 +231,27 @@ button{
 
 
 @media (max-width: 768px){
+
+  .container{
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .left-panel{
+    width:100%;
+    position:relative;
+    top:auto;
+  }
+
+  .right-panel{
+    width:100%;
+  }
+
+  .schedule-wrapper{
+    min-width:700px;
+    overflow-x:auto;
+  }
+
   .court-header{
     grid-template-columns:80px repeat(3, 120px);
   }
@@ -226,7 +260,4 @@ button{
     grid-template-columns:80px repeat(3, 120px);
   }
 
-  #scheduleGrid{
-    overflow-x:auto;
-  }
 }
