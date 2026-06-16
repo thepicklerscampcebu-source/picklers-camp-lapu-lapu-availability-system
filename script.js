@@ -1,4 +1,5 @@
 let currentDate = new Date();
+let selectedDate = null;
 
 function renderCalendar(){
 
@@ -57,10 +58,46 @@ function renderCalendar(){
 
       div.classList.add("selected-day");
 
+        // STORE SELECTED DATE
+      selectedDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        day
+      );
+
+      updateSelectedDisplay();
     };
 
     calendarDays.appendChild(div);
 
+  }
+
+}
+
+
+function updateSelectedDisplay(){
+
+  const courtEl =
+    document.getElementById("selectedCourt");
+
+  const timeEl =
+    document.getElementById("selectedTime");
+
+  const dateEl =
+    document.getElementById("selectedDate");
+
+  if(!dateEl) return;
+
+  if(selectedDate){
+    const formatted =
+      selectedDate.toLocaleDateString('en-US',{
+        weekday:'short',
+        year:'numeric',
+        month:'short',
+        day:'numeric'
+      });
+
+    dateEl.innerText = "Date: " + formatted;
   }
 
 }
@@ -133,6 +170,9 @@ function generateGrid(){
 
         document.getElementById("selectedTime")
           .innerText = "Time: " + formatHour(hour);
+
+        // UPDATE DATE DISPLAY TOO
+        updateSelectedDisplay();
 
       });
 
