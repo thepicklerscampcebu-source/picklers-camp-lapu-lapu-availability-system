@@ -68,94 +68,71 @@ function renderCalendar(){
 
 function formatHour(hour){
 
-  const start =
-    hour % 12 || 12;
+  const start = hour % 12 || 12;
+  const startPeriod = hour < 12 ? "AM" : "PM";
 
-  const startPeriod =
-    hour < 12 || hour === 24
-      ? "AM"
-      : "PM";
+  const endHour = (hour + 1) % 24;
+  const end = endHour % 12 || 12;
+  const endPeriod = endHour < 12 ? "AM" : "PM";
 
-  const endHour =
-    (hour + 1) % 24;
-
-  const end =
-    endHour % 12 || 12;
-
-  const endPeriod =
-    endHour < 12
-      ? "AM"
-      : "PM";
-
-  return `${start} ${startPeriod} - ${end} ${endPeriod}`;
-
+  return `${start}${startPeriod} - ${end}${endPeriod}`;
 }
 
 
 function generateGrid(){
 
-  const tbody =
-    document.getElementById("availabilityBody");
+  const grid =
+    document.getElementById("scheduleGrid");
 
-  tbody.innerHTML = "";
+  grid.innerHTML = "";
 
-  const courts = [
-    "Court 1",
-    "Court 2",
-    "Court 3"
-  ];
+  const courts = ["Court 1", "Court 2", "Court 3"];
 
   let selectedCell = null;
 
   for(let hour = 7; hour <= 25; hour++){
 
     const row =
-      document.createElement("tr");
+      document.createElement("div");
 
-    const timeCell =
-      document.createElement("td");
+    row.classList.add("schedule-row");
 
-    timeCell.innerText =
+    // TIME LABEL
+    const time =
+      document.createElement("div");
+
+    time.classList.add("time-label");
+
+    time.innerText =
       formatHour(hour);
 
-    row.appendChild(timeCell);
+    row.appendChild(time);
 
-    courts.forEach(court=>{
+    // COURT CELLS
+    courts.forEach(court => {
 
       const cell =
-        document.createElement("td");
+        document.createElement("div");
 
-      cell.classList.add("available");
+      cell.classList.add("slot");
 
-      cell.dataset.court =
-        court;
+      cell.dataset.court = court;
+      cell.dataset.time = formatHour(hour);
 
-      cell.dataset.time =
-        formatHour(hour);
-
-      cell.addEventListener("click", ()=>{
+      cell.addEventListener("click", () => {
 
         if(selectedCell){
-
-          selectedCell.classList.remove(
-            "selected"
-          );
-
+          selectedCell.classList.remove("selected");
         }
 
         cell.classList.add("selected");
-
         selectedCell = cell;
 
-        document.getElementById(
-          "selectedCourt"
-        ).innerText =
-          "Court: " + court;
+        document.getElementById("selectedCourt")
+          .innerText = "Court: " + court;
 
-        document.getElementById(
-          "selectedTime"
-        ).innerText =
-          "Time: " + formatHour(hour);
+        document.getElementById("selectedTime")
+          .innerText = "Time: " + formatHour(hour);
 
       });
 
@@ -163,11 +140,10 @@ function generateGrid(){
 
     });
 
-    tbody.appendChild(row);
-
+    grid.appendChild(row);
   }
-
 }
+
 
 document.getElementById("prevMonth")
 .onclick = function(){
@@ -192,5 +168,4 @@ document.getElementById("nextMonth")
 };
 
 renderCalendar();
-
 generateGrid();
