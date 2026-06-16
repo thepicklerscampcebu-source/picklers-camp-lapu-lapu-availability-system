@@ -1,31 +1,3 @@
-let selectedCell = null;
-
-document.querySelectorAll(".available")
-.forEach(cell=>{
-
-  cell.addEventListener("click", ()=>{
-
-    if(selectedCell){
-      selectedCell.classList.remove("selected");
-    }
-
-    cell.classList.add("selected");
-
-    selectedCell = cell;
-
-    document.getElementById("selectedCourt")
-      .innerText =
-      "Court: " + cell.dataset.court;
-
-    document.getElementById("selectedTime")
-      .innerText =
-      "Time: " + cell.dataset.time;
-
-  });
-
-});
-
-
 let currentDate = new Date();
 
 function renderCalendar(){
@@ -93,6 +65,110 @@ function renderCalendar(){
 
 }
 
+
+function formatHour(hour){
+
+  const start =
+    hour % 12 || 12;
+
+  const startPeriod =
+    hour < 12 || hour === 24
+      ? "AM"
+      : "PM";
+
+  const endHour =
+    (hour + 1) % 24;
+
+  const end =
+    endHour % 12 || 12;
+
+  const endPeriod =
+    endHour < 12
+      ? "AM"
+      : "PM";
+
+  return `${start} ${startPeriod} - ${end} ${endPeriod}`;
+
+}
+
+
+function generateGrid(){
+
+  const tbody =
+    document.getElementById("availabilityBody");
+
+  tbody.innerHTML = "";
+
+  const courts = [
+    "Court 1",
+    "Court 2",
+    "Court 3"
+  ];
+
+  let selectedCell = null;
+
+  for(let hour = 7; hour <= 25; hour++){
+
+    const row =
+      document.createElement("tr");
+
+    const timeCell =
+      document.createElement("td");
+
+    timeCell.innerText =
+      formatHour(hour);
+
+    row.appendChild(timeCell);
+
+    courts.forEach(court=>{
+
+      const cell =
+        document.createElement("td");
+
+      cell.classList.add("available");
+
+      cell.dataset.court =
+        court;
+
+      cell.dataset.time =
+        formatHour(hour);
+
+      cell.addEventListener("click", ()=>{
+
+        if(selectedCell){
+
+          selectedCell.classList.remove(
+            "selected"
+          );
+
+        }
+
+        cell.classList.add("selected");
+
+        selectedCell = cell;
+
+        document.getElementById(
+          "selectedCourt"
+        ).innerText =
+          "Court: " + court;
+
+        document.getElementById(
+          "selectedTime"
+        ).innerText =
+          "Time: " + formatHour(hour);
+
+      });
+
+      row.appendChild(cell);
+
+    });
+
+    tbody.appendChild(row);
+
+  }
+
+}
+
 document.getElementById("prevMonth")
 .onclick = function(){
 
@@ -116,3 +192,5 @@ document.getElementById("nextMonth")
 };
 
 renderCalendar();
+
+generateGrid();
