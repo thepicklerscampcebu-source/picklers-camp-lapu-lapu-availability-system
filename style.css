@@ -22,6 +22,7 @@ body{
 
 .right-panel{
   flex:1;
+  padding-top:10px;
 }
 
 .right-panel h2{
@@ -87,25 +88,24 @@ button{
   flex-direction:column;
   gap:10px;
 
-  overflow-x:auto;
   max-width:100%;
-}
-
-
-.schedule-wrapper{
   min-width:650px;
+
+  overflow-x:auto;
 }
+
 
 
 .court-header{
   display:grid;
-  grid-template-columns:100px repeat(3, 1fr);
+  grid-template-columns:140px repeat(3, minmax(100px, 1fr));
   font-size:12px;
   font-weight:bold;
   color:#666;
   position:sticky;
   top:0;
   background:white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   z-index:5;
   padding:5px 0;
 }
@@ -113,7 +113,7 @@ button{
 
 .schedule-row{
   display:grid;
-  grid-template-columns:100px repeat(3, 1fr);
+  grid-template-columns:140px repeat(3, minmax(100px, 1fr));
   align-items:center;
 }
 
@@ -122,6 +122,7 @@ button{
   font-size:12px;
   color:#777;
   padding:6px;
+  white-space: nowrap;
 }
 
 
@@ -233,31 +234,25 @@ button{
 @media (max-width: 768px){
 
   .container{
-    flex-direction:column;
-    gap:20px;
-  }
-
-  .left-panel{
-    width:100%;
-    position:relative;
-    top:auto;
-  }
-
-  .right-panel{
-    width:100%;
+  flex-direction:column;
   }
 
   .schedule-wrapper{
-    min-width:700px;
-    overflow-x:auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .court-header{
-    grid-template-columns:80px repeat(3, 120px);
-  }
-
+  .court-header,
   .schedule-row{
-    grid-template-columns:80px repeat(3, 120px);
+    grid-template-columns:110px repeat(3, 90px);
+  }
+
+  .time-label{
+    font-size:11px;
+    white-space: nowrap;
+  }
+
+  .slot{
+    height:34px;
   }
 
 }
