@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <?!= include('availabilityCSS'); ?>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="left-panel">
+
+    <div class="calendar">
+
+      <div class="calendar-header">
+
+        <button id="prevMonth">◀</button>
+
+        <h2 id="monthYear"></h2>
+
+        <button id="nextMonth">▶</button>
+
+      </div>
+
+      <div class="weekdays">
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+      </div>
+
+      <div id="calendarDays"></div>
+
+    </div>
+
+  </div>
+
+
+  <div class="right-panel">
+
+    <h2>Availability</h2>
+
+    <table>
+
+      <tr>
+        <th>Time</th>
+        <th>Court 1</th>
+        <th>Court 2</th>
+        <th>Court 3</th>
+      </tr>
+
+      <tr>
+        <td>6 PM</td>
+
+        <td class="available"
+            data-court="Court 1"
+            data-time="6 PM"></td>
+
+        <td class="occupied"></td>
+
+        <td class="available"
+            data-court="Court 3"
+            data-time="6 PM"></td>
+      </tr>
+
+      <tr>
+        <td>7 PM</td>
+
+        <td class="available"
+            data-court="Court 1"
+            data-time="7 PM"></td>
+
+        <td class="available"
+            data-court="Court 2"
+            data-time="7 PM"></td>
+
+        <td class="occupied"></td>
+      </tr>
+
+      <tr>
+        <td>8 PM</td>
+
+        <td class="occupied"></td>
+
+        <td class="available"
+            data-court="Court 2"
+            data-time="8 PM"></td>
+
+        <td class="available"
+            data-court="Court 3"
+            data-time="8 PM"></td>
+      </tr>
+
+    </table>
+
+
+    <div class="summary">
+
+      <h3>Selected Slot</h3>
+
+      <p id="selectedCourt">Court:</p>
+
+      <p id="selectedTime">Time:</p>
+
+      <button>
+        BOOK NOW
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<?!= include('availabilityJS'); ?>
+
+</body>
+</html>
