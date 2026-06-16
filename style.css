@@ -7,7 +7,7 @@ body{
   display:flex;
   gap:40px;
   align-items:flex-start;
-  flex-wrap:wrap;
+  flex-wrap:nowrap; /* 🔥 FORCE SIDE BY SIDE */
 }
 
 .left-panel{
@@ -89,7 +89,7 @@ button{
   gap:10px;
 
   max-width:100%;
-  min-width:650px;
+  min-width:700px;
 
   overflow-x:auto;
 }
@@ -106,7 +106,7 @@ button{
   top:0;
   background:white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  z-index:5;
+  z-index:10;
   padding:5px 0;
 }
 
@@ -237,13 +237,27 @@ button{
   flex-direction:column;
   }
 
+
+  .left-panel{
+  position:relative;
+  top:auto;
+  width:100%;
+  }
+
   .schedule-wrapper{
+    min-width:650px;
     -webkit-overflow-scrolling: touch;
   }
 
   .court-header,
   .schedule-row{
     grid-template-columns:110px repeat(3, 90px);
+  }
+
+
+  .court-header{
+  position:sticky;
+  top:0;
   }
 
   .time-label{
