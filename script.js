@@ -103,6 +103,49 @@ function updateSelectedDisplay(){
 }
 
 
+function updateSelectionSummary(){
+
+  if(selectedSlots.length === 0){
+
+    document.getElementById("selectedCourt")
+      .innerText = "Court:";
+
+    document.getElementById("selectedTime")
+      .innerText = "Time:";
+
+    return;
+
+  }
+
+  const sortedSlots =
+    [...selectedSlots].sort(
+      (a,b)=>
+        parseInt(a.dataset.hour) -
+        parseInt(b.dataset.hour)
+    );
+
+  const first = sortedSlots[0];
+  const last =
+    sortedSlots[sortedSlots.length-1];
+
+  document.getElementById("selectedCourt")
+    .innerText =
+    "Court: " + first.dataset.court;
+
+  document.getElementById("selectedTime")
+    .innerText =
+    "Time: " +
+    formatHour(parseInt(first.dataset.hour))
+    +
+    " to "
+    +
+    formatHour(parseInt(last.dataset.hour));
+
+  updateSelectedDisplay();
+
+}
+
+
 function formatHour(hour){
 
   const start = hour % 12 || 12;
@@ -125,7 +168,7 @@ function generateGrid(){
 
   const courts = ["Court 1", "Court 2", "Court 3"];
 
-  let selectedCell = null;
+  let selectedSlots = [];
 
   for(let hour = 7; hour <= 25; hour++){
 
@@ -155,25 +198,28 @@ function generateGrid(){
 
       cell.dataset.court = court;
       cell.dataset.time = formatHour(hour);
+      cell.dataset.hour = hour;
 
       cell.addEventListener("click", () => {
-
-        if(selectedCell){
-          selectedCell.classList.remove("selected");
+      
+        if(selectedSlots.includes(cell)){
+      
+          cell.classList.remove("selected");
+      
+          selectedSlots =
+            selectedSlots.filter(slot => slot !== cell);
+      
         }
-
-        cell.classList.add("selected");
-        selectedCell = cell;
-
-        document.getElementById("selectedCourt")
-          .innerText = "Court: " + court;
-
-        document.getElementById("selectedTime")
-          .innerText = "Time: " + formatHour(hour);
-
-        // UPDATE DATE DISPLAY TOO
-        updateSelectedDisplay();
-
+        else{
+      
+          cell.classList.add("selected");
+      
+          selectedSlots.push(cell);
+      
+        }
+      
+        updateSelectionSummary();
+      
       });
 
       row.appendChild(cell);
