@@ -106,6 +106,30 @@ function updateSelectedDisplay(){
 
 
 
+function areConsecutive(hours){
+
+  if(hours.length <= 1){
+    return true;
+  }
+
+  const sorted =
+    [...hours].sort((a,b)=>a-b);
+
+  for(let i=1; i<sorted.length; i++){
+
+    if(sorted[i] !== sorted[i-1] + 1){
+      return false;
+    }
+
+  }
+
+  return true;
+
+}
+
+
+
+
 function repaintGrid(){
 
   document
@@ -166,11 +190,11 @@ function updateSummary(){
 
   const firstHour =
     sortedHours[0];
-
-  const lastHour =
+  
+  const endHour =
     sortedHours[
       sortedHours.length-1
-    ];
+    ] + 1;
 
   document
     .getElementById(
@@ -188,15 +212,34 @@ function updateSummary(){
     .innerText =
     "Time: "
     +
-    formatHour(firstHour)
+    (hourToText(firstHour))
     +
-    " to "
+    " - "
     +
-    formatHour(lastHour);
+    (hourToText(endHour))
 
   updateSelectedDisplay();
 
 }
+
+
+
+function hourToText(hour){
+
+  hour = hour % 24;
+
+  const h =
+    hour % 12 || 12;
+
+  const period =
+    hour < 12
+      ? "AM"
+      : "PM";
+
+  return h + period;
+
+}
+
 
 
 
@@ -260,20 +303,56 @@ function generateGrid(){
         const court =
           cell.dataset.court;
       
-        if(!selectedHours.includes(hour)){
       
-          selectedHours.push(hour);
-      
-        }
-      
-        if(!selectedCourts.includes(court)){
+        // FIRST COURT
+        if(selectedCourts.length === 0){
       
           selectedCourts.push(court);
       
         }
       
-        repaintGrid();
       
+        // ADD NEW HOUR
+        if(
+          selectedCourts.includes(court)
+        ){
+      
+          if(selectedHours.includes(hour)){
+      
+            selectedHours =
+              selectedHours.filter(
+                h => h !== hour
+              );
+      
+          }
+          else{
+      
+            const testHours =
+              [...selectedHours, hour];
+      
+            if(
+              areConsecutive(testHours)
+            ){
+      
+              selectedHours =
+                testHours;
+      
+            }
+      
+          }
+      
+        }
+      
+      
+        // ADD NEW COURT
+        else{
+      
+          selectedCourts.push(court);
+      
+        }
+      
+      
+        repaintGrid();
         updateSummary();
       
       });
