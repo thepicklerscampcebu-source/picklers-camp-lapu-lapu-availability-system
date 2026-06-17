@@ -1,5 +1,7 @@
 let currentDate = new Date();
 let selectedDate = null;
+let selectedHours = [];
+let selectedCourts = [];
 
 function renderCalendar(){
 
@@ -103,47 +105,99 @@ function updateSelectedDisplay(){
 }
 
 
-function updateSelectionSummary(){
 
-  if(selectedSlots.length === 0){
+function repaintGrid(){
 
-    document.getElementById("selectedCourt")
-      .innerText = "Court:";
+  document
+    .querySelectorAll(".slot")
+    .forEach(cell=>{
 
-    document.getElementById("selectedTime")
-      .innerText = "Time:";
+      const hour =
+        parseInt(cell.dataset.hour);
+
+      const court =
+        cell.dataset.court;
+
+      if(
+        selectedHours.includes(hour)
+        &&
+        selectedCourts.includes(court)
+      ){
+
+        cell.classList.add("selected");
+
+      }
+      else{
+
+        cell.classList.remove("selected");
+
+      }
+
+    });
+
+}
+
+
+
+function updateSummary(){
+
+  if(
+    selectedHours.length===0
+  ){
+
+    document.getElementById(
+      "selectedCourt"
+    ).innerText =
+      "Court:";
+
+    document.getElementById(
+      "selectedTime"
+    ).innerText =
+      "Time:";
 
     return;
 
   }
 
-  const sortedSlots =
-    [...selectedSlots].sort(
-      (a,b)=>
-        parseInt(a.dataset.hour) -
-        parseInt(b.dataset.hour)
-    );
 
-  const first = sortedSlots[0];
-  const last =
-    sortedSlots[sortedSlots.length-1];
+  const sortedHours =
+    [...selectedHours]
+    .sort((a,b)=>a-b);
 
-  document.getElementById("selectedCourt")
+  const firstHour =
+    sortedHours[0];
+
+  const lastHour =
+    sortedHours[
+      sortedHours.length-1
+    ];
+
+  document
+    .getElementById(
+      "selectedCourt"
+    )
     .innerText =
-    "Court: " + first.dataset.court;
+    "Court: "
+    +
+    selectedCourts.join(", ");
 
-  document.getElementById("selectedTime")
+  document
+    .getElementById(
+      "selectedTime"
+    )
     .innerText =
-    "Time: " +
-    formatHour(parseInt(first.dataset.hour))
+    "Time: "
+    +
+    formatHour(firstHour)
     +
     " to "
     +
-    formatHour(parseInt(last.dataset.hour));
+    formatHour(lastHour);
 
   updateSelectedDisplay();
 
 }
+
 
 
 function formatHour(hour){
@@ -167,8 +221,6 @@ function generateGrid(){
   grid.innerHTML = "";
 
   const courts = ["Court 1", "Court 2", "Court 3"];
-
-  let selectedSlots = [];
 
   for(let hour = 7; hour <= 25; hour++){
 
@@ -202,23 +254,27 @@ function generateGrid(){
 
       cell.addEventListener("click", () => {
       
-        if(selectedSlots.includes(cell)){
+        const hour =
+          parseInt(cell.dataset.hour);
       
-          cell.classList.remove("selected");
+        const court =
+          cell.dataset.court;
       
-          selectedSlots =
-            selectedSlots.filter(slot => slot !== cell);
+        if(!selectedHours.includes(hour)){
       
-        }
-        else{
-      
-          cell.classList.add("selected");
-      
-          selectedSlots.push(cell);
+          selectedHours.push(hour);
       
         }
       
-        updateSelectionSummary();
+        if(!selectedCourts.includes(court)){
+      
+          selectedCourts.push(court);
+      
+        }
+      
+        repaintGrid();
+      
+        updateSummary();
       
       });
 
