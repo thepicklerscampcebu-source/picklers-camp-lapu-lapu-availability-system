@@ -246,7 +246,25 @@ function updateSummary(){
     +
     " - "
     +
-    (hourToText(endHour))
+    (hourToText(finalHour))
+
+  const duration =
+  finalHour - firstHour;
+
+document
+  .getElementById(
+    "selectedDuration"
+  )
+  .innerText =
+  "Duration: "
+  +
+  duration
+  +
+  (
+    duration === 1
+      ? " hour"
+      : " hours"
+  );
 
   updateSelectedDisplay();
 
@@ -340,7 +358,27 @@ function generateGrid(){
           selectedCourts.push(court);
       
         }
-      
+
+
+        // REMOVE COURT
+        if(
+          selectedCourts.includes(court)
+          &&
+          selectedCourts.length > 1
+        ){
+        
+          selectedCourts =
+            selectedCourts.filter(
+              c => c !== court
+            );
+        
+          repaintGrid();
+          updateSummary();
+        
+          return;
+        
+        }
+    
       
         // SAME COURT
         if(selectedCourts.includes(court)){
@@ -370,11 +408,11 @@ function generateGrid(){
         }
       
       
-        // ADD NEW COURT
+        // ADD OR REMOVE COURT
         else{
-      
+        
           selectedCourts.push(court);
-      
+        
         }
       
       
