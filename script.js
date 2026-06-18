@@ -1,6 +1,8 @@
 let currentDate = new Date();
 let selectedDate = null;
-let selectedHours = [];
+let startHour = null;
+let endHour = null;
+
 let selectedCourts = [];
 
 function renderCalendar(){
@@ -77,6 +79,7 @@ function renderCalendar(){
 }
 
 
+
 function updateSelectedDisplay(){
 
   const courtEl =
@@ -103,6 +106,37 @@ function updateSelectedDisplay(){
   }
 
 }
+
+
+
+function getSelectedHours(){
+
+  if(startHour === null){
+    return [];
+  }
+
+  if(endHour === null){
+    return [startHour];
+  }
+
+  const minHour =
+    Math.min(startHour, endHour);
+
+  const maxHour =
+    Math.max(startHour, endHour);
+
+  let hours = [];
+
+  for(let h = minHour; h < maxHour; h++){
+
+    hours.push(h);
+
+  }
+
+  return hours;
+
+}
+
 
 
 
@@ -143,7 +177,7 @@ function repaintGrid(){
         cell.dataset.court;
 
       if(
-        selectedHours.includes(hour)
+        getSelectedHours().includes(hour)
         &&
         selectedCourts.includes(court)
       ){
@@ -166,7 +200,7 @@ function repaintGrid(){
 function updateSummary(){
 
   if(
-    selectedHours.length===0
+    getSelectedHours().length===0
   ){
 
     document.getElementById(
@@ -184,17 +218,13 @@ function updateSummary(){
   }
 
 
-  const sortedHours =
-    [...selectedHours]
-    .sort((a,b)=>a-b);
+  const sortedHours = getSelectedHours();
 
   const firstHour =
-    sortedHours[0];
+    Math.min(startHour, endHour ?? startHour);
   
-  const endHour =
-    sortedHours[
-      sortedHours.length-1
-    ] + 1;
+  const finalHour =
+    Math.max(startHour, endHour ?? startHour) + 1;
 
   document
     .getElementById(
@@ -312,32 +342,28 @@ function generateGrid(){
         }
       
       
-        // ADD NEW HOUR
-        if(
-          selectedCourts.includes(court)
-        ){
+        // SAME COURT
+        if(selectedCourts.includes(court)){
       
-          if(selectedHours.includes(hour)){
+          if(startHour === null){
       
-            selectedHours =
-              selectedHours.filter(
-                h => h !== hour
-              );
+            startHour = hour;
+      
+            endHour = null;
       
           }
+      
+          else if(endHour === null){
+      
+            endHour = hour;
+      
+          }
+      
           else{
       
-            const testHours =
-              [...selectedHours, hour];
+            startHour = hour;
       
-            if(
-              areConsecutive(testHours)
-            ){
-      
-              selectedHours =
-                testHours;
-      
-            }
+            endHour = null;
       
           }
       
@@ -353,6 +379,7 @@ function generateGrid(){
       
       
         repaintGrid();
+      
         updateSummary();
       
       });
