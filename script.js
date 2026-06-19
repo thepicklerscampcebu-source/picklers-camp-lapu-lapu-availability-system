@@ -409,17 +409,50 @@ function generateGrid(){
         
           }
         
-          // RECLICK START OR END OF RANGE → CLEAR EVERYTHING
+          // RECLICK END SLOT → SHRINK RANGE
           else if(
-            hour === startHour ||
+            endHour !== null &&
             hour === endHour
           ){
-        
+          
+            // if range consists of only two slots,
+            // go back to single slot
+            if(
+              Math.abs(endHour - startHour) === 1
+            ){
+          
+              endHour = null;
+          
+            }
+            else{
+          
+              // move end one slot toward start
+              if(endHour > startHour){
+          
+                endHour--;
+          
+              }
+              else{
+          
+                endHour++;
+          
+              }
+          
+            }
+          
+          }
+          
+          
+          // RECLICK START SLOT → CLEAR EVERYTHING
+          else if(
+            hour === startHour
+          ){
+          
             startHour = null;
             endHour = null;
-        
+          
             selectedCourts = [];
-        
+          
           }
         
           // START NEW RANGE
