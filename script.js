@@ -409,49 +409,65 @@ function generateGrid(){
         
           }
         
-          // RECLICK END SLOT → SHRINK RANGE
-          else if(
-            endHour !== null &&
-            hour === endHour
-          ){
+          // RANGE ALREADY EXISTS
+          else if(endHour !== null){
           
-            // if range consists of only two slots,
-            // go back to single slot
-            if(
-              Math.abs(endHour - startHour) === 1
-            ){
+            const rangeStart =
+              Math.min(startHour, endHour);
           
-              endHour = null;
+            const rangeEnd =
+              Math.max(startHour, endHour);
           
-            }
-            else{
           
-              // move end one slot toward start
-              if(endHour > startHour){
+            // User clicked actual END of range
+            if(hour === rangeEnd){
           
-                endHour--;
+              // only two slots left
+              if(rangeEnd - rangeStart === 1){
+          
+                startHour = rangeStart;
+                endHour = null;
           
               }
               else{
           
-                endHour++;
+                // preserve original direction
+                if(startHour > endHour){
+          
+                  startHour--;
+          
+                }
+                else{
+          
+                  endHour--;
+          
+                }
           
               }
           
             }
           
-          }
+          
+            // User clicked actual START of range
+            else if(hour === rangeStart){
+          
+              startHour = null;
+              endHour = null;
+          
+              selectedCourts = [];
+          
+            }
           
           
-          // RECLICK START SLOT → CLEAR EVERYTHING
-          else if(
-            hour === startHour
-          ){
+            // User clicked somewhere inside the range
+            else{
           
-            startHour = null;
-            endHour = null;
+              startHour = hour;
+              endHour = null;
           
-            selectedCourts = [];
+              selectedCourts = [court];
+          
+            }
           
           }
         
