@@ -203,6 +203,8 @@ function updateSummary(){
     getSelectedHours().length===0
   ){
 
+    document.getElementById("selectedDate").innerText = "Date:";
+
     document.getElementById("selectedCourt").innerText = "Court:";
 
     document.getElementById("selectedTime").innerText = "Time:";
@@ -378,46 +380,58 @@ function generateGrid(){
       
         // SAME COURT
         if(selectedCourts.includes(court)){
-      
+        
+          // FIRST CLICK
           if(startHour === null){
-      
+        
             startHour = hour;
-      
             endHour = null;
-      
+        
           }
-      
+        
+          // SINGLE SLOT RECLICK → CLEAR
+          else if(
+            endHour === null &&
+            startHour === hour
+          ){
+        
+            startHour = null;
+            endHour = null;
+        
+            selectedCourts = [];
+        
+          }
+        
+          // SECOND CLICK → CREATE RANGE
           else if(endHour === null){
-      
+        
             endHour = hour;
-      
+        
           }
-      
+        
+          // RECLICK START OR END OF RANGE → CLEAR EVERYTHING
+          else if(
+            hour === startHour ||
+            hour === endHour
+          ){
+        
+            startHour = null;
+            endHour = null;
+        
+            selectedCourts = [];
+        
+          }
+        
+          // START NEW RANGE
           else{
-          
-              // user clicked one of the selected endpoints again
-              if(
-                  startHour === hour ||
-                  endHour === hour
-              ){
-          
-                  startHour = null;
-                  endHour = null;
-          
-                  selectedCourts = [];
-          
-              }
-              else{
-          
-                  startHour = hour;
-                  endHour = null;
-          
-                  selectedCourts = [court];
-          
-              }
-          
+        
+            startHour = hour;
+            endHour = null;
+        
+            selectedCourts = [court];
+        
           }
-      
+        
         }
       
       
