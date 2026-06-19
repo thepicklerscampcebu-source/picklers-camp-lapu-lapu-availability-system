@@ -71,6 +71,8 @@ function renderCalendar(){
         day
       );
 
+      document.getElementById("dateWarning").innerText = "";
+
       updateSelectedDisplay();
     };
 
@@ -370,10 +372,11 @@ function generateGrid(){
       cell.addEventListener("click", () => {
 
         if(selectedDate === null){
-
-          alert(
-            "Please select a date first."
-          );
+        
+          document.getElementById(
+            "dateWarning"
+          ).innerText =
+            "Please select a date first.";
         
           return;
         
