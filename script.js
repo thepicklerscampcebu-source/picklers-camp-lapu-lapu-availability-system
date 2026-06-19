@@ -62,14 +62,14 @@ function renderCalendar(){
 
       div.classList.add("selected-day");
 
-        // STORE SELECTED DATE
+      clearSelection();
+      
+      // STORE SELECTED DATE
       selectedDate = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
         day
       );
-
-      clearSelection();
 
       updateSelectedDisplay();
     };
@@ -205,6 +205,8 @@ function clearSelection(){
   endHour = null;
 
   selectedCourts = [];
+
+  selectedDate = null;
 
   repaintGrid();
 
@@ -422,10 +424,7 @@ function generateGrid(){
             startHour === hour
           ){
         
-            startHour = null;
-            endHour = null;
-        
-            selectedCourts = [];
+            clearSelection();
         
           }
         
@@ -478,10 +477,7 @@ function generateGrid(){
             // User clicked actual START of range
             else if(hour === rangeStart){
           
-              startHour = null;
-              endHour = null;
-          
-              selectedCourts = [];
+              clearSelection();
           
             }
           
