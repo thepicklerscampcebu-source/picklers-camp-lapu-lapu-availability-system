@@ -675,20 +675,20 @@ document
       
       
       // redirect
-      window.location.href =
+      const url =
         "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html"
-        +
-        "?date="
-        + encodeURIComponent(formattedDate)
-        +
-        "&court="
-        + encodeURIComponent(courtText)
-        +
-        "&timeIn="
-        + firstHour
-        +
-        "&duration="
-        + duration;
+        + "?date=" + encodeURIComponent(formattedDate)
+        + "&court=" + encodeURIComponent(courtText)
+        + "&timeIn=" + firstHour
+        + "&duration=" + duration;
+      
+      // open in new tab
+      const newTab = window.open(url, "_blank", "noopener,noreferrer");
+      
+      // fallback if popup is blocked
+      if (!newTab) {
+        window.location.href = url;
+      }
 
     }
   );
