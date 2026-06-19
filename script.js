@@ -620,9 +620,75 @@ document
         "bookingWarning"
       ).innerText = "";
 
-      alert(
-        "Booking information is complete."
-      );
+      // Build court text
+      let courtText = "";
+      
+      if (selectedCourts.length === 1) {
+      
+        courtText = selectedCourts[0];
+      
+      }
+      else if (selectedCourts.length === 2) {
+      
+        courtText =
+          selectedCourts[0]
+          + " and "
+          + selectedCourts[1];
+      
+      }
+      else {
+      
+        courtText =
+          "Court 1, Court 2, and Court 3";
+      
+      }
+      
+      
+      // YYYY-MM-DD
+      const yyyy =
+        selectedDate.getFullYear();
+      
+      const mm =
+        String(selectedDate.getMonth()+1)
+          .padStart(2,"0");
+      
+      const dd =
+        String(selectedDate.getDate())
+          .padStart(2,"0");
+      
+      const formattedDate =
+        `${yyyy}-${mm}-${dd}`;
+      
+      
+      // duration
+      const duration =
+        Math.max(startHour, endHour ?? startHour)
+        -
+        Math.min(startHour, endHour ?? startHour)
+        +
+        1;
+      
+      
+      // start hour
+      const firstHour =
+        Math.min(startHour, endHour ?? startHour);
+      
+      
+      // redirect
+      window.location.href =
+        "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html"
+        +
+        "?date="
+        + encodeURIComponent(formattedDate)
+        +
+        "&court="
+        + encodeURIComponent(courtText)
+        +
+        "&timeIn="
+        + firstHour
+        +
+        "&duration="
+        + duration;
 
     }
   );
