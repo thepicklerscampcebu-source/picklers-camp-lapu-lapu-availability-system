@@ -69,6 +69,8 @@ function renderCalendar(){
         day
       );
 
+      clearSelection();
+
       updateSelectedDisplay();
     };
 
@@ -192,6 +194,21 @@ function repaintGrid(){
       }
 
     });
+
+}
+
+
+
+function clearSelection(){
+
+  startHour = null;
+  endHour = null;
+
+  selectedCourts = [];
+
+  repaintGrid();
+
+  updateSummary();
 
 }
 
@@ -342,6 +359,16 @@ function generateGrid(){
       cell.dataset.hour = hour;
 
       cell.addEventListener("click", () => {
+
+        if(selectedDate === null){
+
+          alert(
+            "Please select a date first."
+          );
+        
+          return;
+        
+        }
       
         const hour =
           parseInt(cell.dataset.hour);
