@@ -206,6 +206,12 @@ button{
   gap:5px;
 }
 
+#dateWarning{
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
 .day{
   height:36px;
 
