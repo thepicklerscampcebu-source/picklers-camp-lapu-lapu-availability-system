@@ -564,3 +564,65 @@ document.getElementById("nextMonth")
 
 renderCalendar();
 generateGrid();
+
+
+document
+  .getElementById(
+    "bookNowBtn"
+  )
+  .addEventListener(
+    "click",
+    function(){
+
+      document.getElementById(
+        "bookingWarning"
+      ).innerText = "";
+
+      if(selectedDate === null){
+
+        document.getElementById(
+          "bookingWarning"
+        ).innerText =
+          "Please select a date.";
+
+        return;
+
+      }
+
+      if(
+        getSelectedHours().length === 0
+      ){
+
+        document.getElementById(
+          "bookingWarning"
+        ).innerText =
+          "Please select a time slot.";
+
+        return;
+
+      }
+
+      if(
+        selectedCourts.length === 0
+      ){
+
+        document.getElementById(
+          "bookingWarning"
+        ).innerText =
+          "Please select a court.";
+
+        return;
+
+      }
+
+      // everything valid
+      document.getElementById(
+        "bookingWarning"
+      ).innerText = "";
+
+      alert(
+        "Booking information is complete."
+      );
+
+    }
+  );
