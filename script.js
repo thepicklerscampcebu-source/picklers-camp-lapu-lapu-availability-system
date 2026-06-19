@@ -127,7 +127,7 @@ function getSelectedHours(){
 
   let hours = [];
 
-  for(let h = minHour; h < maxHour; h++){
+  for(let h = minHour; h <= maxHour; h++){
 
     hours.push(h);
 
@@ -203,15 +203,11 @@ function updateSummary(){
     getSelectedHours().length===0
   ){
 
-    document.getElementById(
-      "selectedCourt"
-    ).innerText =
-      "Court:";
+    document.getElementById("selectedCourt").innerText = "Court:";
 
-    document.getElementById(
-      "selectedTime"
-    ).innerText =
-      "Time:";
+    document.getElementById("selectedTime").innerText = "Time:";
+
+    document.getElementById("selectedDuration").innerText = "Duration:";
 
     return;
 
@@ -398,11 +394,28 @@ function generateGrid(){
           }
       
           else{
-      
-            startHour = hour;
-      
-            endHour = null;
-      
+          
+              // user clicked one of the selected endpoints again
+              if(
+                  startHour === hour ||
+                  endHour === hour
+              ){
+          
+                  startHour = null;
+                  endHour = null;
+          
+                  selectedCourts = [];
+          
+              }
+              else{
+          
+                  startHour = hour;
+                  endHour = null;
+          
+                  selectedCourts = [court];
+          
+              }
+          
           }
       
         }
