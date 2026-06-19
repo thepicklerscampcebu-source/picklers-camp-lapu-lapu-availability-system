@@ -206,8 +206,6 @@ function clearSelection(){
 
   selectedCourts = [];
 
-  selectedDate = null;
-
   repaintGrid();
 
   updateSummary();
@@ -222,7 +220,16 @@ function updateSummary(){
     getSelectedHours().length===0
   ){
 
-    document.getElementById("selectedDate").innerText = "Date:";
+    if(selectedDate){
+
+      updateSelectedDisplay();
+    
+    }
+    else{
+    
+      document.getElementById("selectedDate").innerText = "Date:";
+    
+    }
 
     document.getElementById("selectedCourt").innerText = "Court:";
 
