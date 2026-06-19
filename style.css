@@ -212,6 +212,14 @@ button{
   margin-top: 10px;
 }
 
+
+#bookingWarning{
+  color:red;
+  font-size:14px;
+  margin-top:10px;
+}
+
+
 .day{
   height:36px;
 
