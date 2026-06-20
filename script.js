@@ -7,6 +7,9 @@ let selectedCourts = [];
 
 let occupiedSlots = [];
 
+// Apps Script Web App URL
+const webAppUrl = "https://script.google.com/macros/s/AKfycbzGreoLN4DfcMPG_8E05DetWeJp29gthoblv9LFSysiCATD-SQHimYAYGLVQCB4nhcwzg/exec";
+
 function sortCourts(courts) {
 
   const order = {
