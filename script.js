@@ -5,6 +5,8 @@ let endHour = null;
 
 let selectedCourts = [];
 
+let occupiedSlots = [];
+
 function sortCourts(courts) {
 
   const order = {
@@ -16,6 +18,17 @@ function sortCourts(courts) {
   return [...courts].sort((a, b) => order[a] - order[b]);
 
 }
+
+
+function findOccupiedSlot(court, hour) {
+
+  return occupiedSlots.find(slot =>
+    slot.court === court &&
+    slot.hour === (hour % 24)
+  );
+
+}
+
 
 function renderCalendar(){
 
@@ -85,7 +98,9 @@ function renderCalendar(){
 
       document.getElementById("bookingWarning").innerText = "";
 
+      loadOccupiedSlots();
       updateSelectedDisplay();
+      
     };
 
     calendarDays.appendChild(div);
@@ -342,6 +357,58 @@ function formatHour(hour){
 }
 
 
+async function loadOccupiedSlots() {
+
+  occupiedSlots = [];
+
+  if (!selectedDate) {
+
+    generateGrid();
+
+    return;
+
+  }
+
+  const yyyy = selectedDate.getFullYear();
+
+  const mm =
+    String(selectedDate.getMonth() + 1)
+      .padStart(2, "0");
+
+  const dd =
+    String(selectedDate.getDate())
+      .padStart(2, "0");
+
+  const formattedDate =
+    `${yyyy}-${mm}-${dd}`;
+
+  try {
+
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "getOccupiedSlots",
+        date: formattedDate
+      })
+    });
+
+    occupiedSlots = await response.json();
+
+  }
+  catch (err) {
+
+    console.error(err);
+
+    occupiedSlots = [];
+
+  }
+
+  generateGrid();
+
+}
+
+
+
 function generateGrid(){
 
   const grid =
@@ -377,20 +444,33 @@ function generateGrid(){
 
       cell.classList.add("slot");
 
+      const occupied = findOccupiedSlot(court, hour);
+      
+      if (occupied) {
+      
+        cell.classList.add("occupied");
+        cell.innerText = occupied.name;
+      
+      }
+
       cell.dataset.court = court;
       cell.dataset.time = formatHour(hour);
       cell.dataset.hour = hour;
 
       cell.addEventListener("click", () => {
 
-      if (selectedDate === null) {
-      
-        document.getElementById("bookingWarning").innerText =
-          "Please select a date.";
-      
-        return;
-      
-      }
+        if (cell.classList.contains("occupied")) {
+          return;
+        }
+
+        if (selectedDate === null) {
+        
+          document.getElementById("bookingWarning").innerText =
+            "Please select a date.";
+        
+          return;
+        
+        }
       
         const hour =
           parseInt(cell.dataset.hour);
@@ -558,7 +638,6 @@ document.getElementById("nextMonth").onclick = function(){
 };
 
 renderCalendar();
-generateGrid();
 loadSelectionFromURL();
 
 
@@ -712,6 +791,7 @@ document
     currentDate = new Date(selectedDate);
   
     renderCalendar();
+    loadOccupiedSlots();
   
     // Highlight selected day
     document.querySelectorAll(".day").forEach(d => {
