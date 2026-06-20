@@ -83,7 +83,7 @@ function renderCalendar(){
         day
       );
 
-      document.getElementById("dateWarning").innerText = "";
+      document.getElementById("bookingWarning").innerText = "";
 
       updateSelectedDisplay();
     };
@@ -220,8 +220,8 @@ function clearSelection(){
 
   selectedCourts = [];
 
+  document.getElementById("bookingWarning").innerText = "";
   repaintGrid();
-
   updateSummary();
 
 }
@@ -383,16 +383,14 @@ function generateGrid(){
 
       cell.addEventListener("click", () => {
 
-        if(selectedDate === null){
-        
-          document.getElementById(
-            "dateWarning"
-          ).innerText =
-            "Please select a date first.";
-        
-          return;
-        
-        }
+      if (selectedDate === null) {
+      
+        document.getElementById("bookingWarning").innerText =
+          "Please select a date.";
+      
+        return;
+      
+      }
       
         const hour =
           parseInt(cell.dataset.hour);
@@ -414,6 +412,7 @@ function generateGrid(){
         
           selectedCourts = selectedCourts.filter(c => c !== court);
         
+          document.getElementById("bookingWarning").innerText = "";
           repaintGrid();
           updateSummary();
         
@@ -524,9 +523,8 @@ function generateGrid(){
         
         }
       
-      
+        document.getElementById("bookingWarning").innerText = "";
         repaintGrid();
-      
         updateSummary();
       
       });
@@ -737,7 +735,8 @@ document
       .map(c => c.trim())
       .filter(Boolean);
   
-    repaintGrid();
-    updateSummary();
+      document.getElementById("bookingWarning").innerText = "";
+      repaintGrid();
+      updateSummary();
   
   }
