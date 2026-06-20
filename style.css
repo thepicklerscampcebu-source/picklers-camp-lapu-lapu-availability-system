@@ -151,6 +151,23 @@ button{
 }
 
 
+.slot.occupied{
+
+  background:#d9534f;
+  color:white;
+
+  cursor:not-allowed;
+
+  font-size:11px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+
+}
+
+
 .calendar{
   border:1px solid #ddd;
   border-radius:15px;
