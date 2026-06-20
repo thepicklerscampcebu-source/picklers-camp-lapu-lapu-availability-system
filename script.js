@@ -5,6 +5,18 @@ let endHour = null;
 
 let selectedCourts = [];
 
+function sortCourts(courts) {
+
+  const order = {
+    "Court 1": 1,
+    "Court 2": 2,
+    "Court 3": 3
+  };
+
+  return [...courts].sort((a, b) => order[a] - order[b]);
+
+}
+
 function renderCalendar(){
 
   const year = currentDate.getFullYear();
@@ -259,7 +271,7 @@ function updateSummary(){
     .innerText =
     "Court: "
     +
-    selectedCourts.join(", ");
+    sortCourts(selectedCourts).join(", ");
 
   document
     .getElementById(
@@ -621,19 +633,21 @@ document
       ).innerText = "";
 
       // Build court text
+      const sortedCourts = sortCourts(selectedCourts);
+      
       let courtText = "";
       
-      if (selectedCourts.length === 1) {
+      if (sortedCourts.length === 1) {
       
-        courtText = selectedCourts[0];
+        courtText = sortedCourts[0];
       
       }
-      else if (selectedCourts.length === 2) {
+      else if (sortedCourts.length === 2) {
       
         courtText =
-          selectedCourts[0]
+          sortedCourts[0]
           + " and "
-          + selectedCourts[1];
+          + sortedCourts[1];
       
       }
       else {
