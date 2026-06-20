@@ -410,16 +410,9 @@ function generateGrid(){
 
 
         // REMOVE COURT
-        if(
-          selectedCourts.includes(court)
-          &&
-          selectedCourts.length > 1
-        ){
+        if(selectedCourts.includes(court) && selectedCourts.length > 1){
         
-          selectedCourts =
-            selectedCourts.filter(
-              c => c !== court
-            );
+          selectedCourts = selectedCourts.filter(c => c !== court);
         
           repaintGrid();
           updateSummary();
@@ -441,10 +434,7 @@ function generateGrid(){
           }
         
           // SINGLE SLOT RECLICK → CLEAR
-          else if(
-            endHour === null &&
-            startHour === hour
-          ){
+          else if(endHour === null && startHour === hour){
         
             clearSelection();
         
@@ -460,11 +450,9 @@ function generateGrid(){
           // RANGE ALREADY EXISTS
           else if(endHour !== null){
           
-            const rangeStart =
-              Math.min(startHour, endHour);
+            const rangeStart = Math.min(startHour, endHour);
           
-            const rangeEnd =
-              Math.max(startHour, endHour);
+            const rangeEnd = Math.max(startHour, endHour);
           
           
             // User clicked actual END of range
@@ -563,12 +551,9 @@ document.getElementById("prevMonth")
 
 };
 
-document.getElementById("nextMonth")
-.onclick = function(){
+document.getElementById("nextMonth").onclick = function(){
 
-  currentDate.setMonth(
-    currentDate.getMonth()+1
-  );
+  currentDate.setMonth(currentDate.getMonth()+1);
 
   renderCalendar();
 
@@ -576,6 +561,7 @@ document.getElementById("nextMonth")
 
 renderCalendar();
 generateGrid();
+loadSelectionFromURL();
 
 
 document
@@ -706,3 +692,58 @@ document
 
     }
   );
+
+
+  function loadSelectionFromURL() {
+  
+    const params = new URLSearchParams(window.location.search);
+  
+    const date = params.get("date");
+    const court = params.get("court");
+    const timeIn = params.get("timeIn");
+    const duration = params.get("duration");
+  
+    if (!date || timeIn === null || duration === null) {
+      return;
+    }
+  
+    // Restore date
+    selectedDate = new Date(date);
+
+    document
+    .querySelectorAll(".day")
+    .forEach(d => {
+  
+      if (
+        Number(d.innerText) === selectedDate.getDate()
+      ) {
+  
+        d.classList.add("selected-day");
+  
+      }
+  
+    });
+  
+    // Restore hours
+    startHour = Number(timeIn);
+    endHour = startHour + Number(duration) - 1;
+  
+    // Restore courts
+    selectedCourts = [];
+  
+    selectedCourts = court
+      .replace(", and ", ", ")
+      .split(",")
+      .map(c => c.trim())
+      .filter(Boolean);
+    
+    else {
+  
+      selectedCourts = [court];
+  
+    }
+  
+    repaintGrid();
+    updateSummary();
+  
+  }
