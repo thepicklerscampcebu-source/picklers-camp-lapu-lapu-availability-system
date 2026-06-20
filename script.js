@@ -709,14 +709,16 @@ document
   
     // Restore date
     selectedDate = new Date(date);
-
-    document
-    .querySelectorAll(".day")
-    .forEach(d => {
   
-      if (
-        Number(d.innerText) === selectedDate.getDate()
-      ) {
+    // Move calendar to correct month
+    currentDate = new Date(selectedDate);
+  
+    renderCalendar();
+  
+    // Highlight selected day
+    document.querySelectorAll(".day").forEach(d => {
+  
+      if (Number(d.innerText) === selectedDate.getDate()) {
   
         d.classList.add("selected-day");
   
@@ -729,19 +731,11 @@ document
     endHour = startHour + Number(duration) - 1;
   
     // Restore courts
-    selectedCourts = [];
-  
     selectedCourts = court
       .replace(", and ", ", ")
       .split(",")
       .map(c => c.trim())
       .filter(Boolean);
-    
-    else {
-  
-      selectedCourts = [court];
-  
-    }
   
     repaintGrid();
     updateSummary();
