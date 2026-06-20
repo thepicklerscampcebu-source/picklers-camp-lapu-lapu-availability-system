@@ -394,6 +394,8 @@ async function loadOccupiedSlots() {
 
     occupiedSlots = await response.json();
 
+    console.log("Occupied slots:", occupiedSlots);
+
   }
   catch (err) {
 
@@ -445,6 +447,15 @@ function generateGrid(){
       cell.classList.add("slot");
 
       const occupied = findOccupiedSlot(court, hour);
+
+      if (occupied) {
+        console.log(
+          "Occupied:",
+          court,
+          hour,
+          occupied.name
+        );
+      }
       
       if (occupied) {
       
