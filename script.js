@@ -751,23 +751,19 @@ document.getElementById("nextMonth").onclick = function(){
 
 renderCalendar();
 
-(async () => {
+if (
+  window.location.search &&
+  new URLSearchParams(window.location.search).has("date")
+) {
 
-  if (
-    window.location.search &&
-    new URLSearchParams(window.location.search).has("date")
-  ) {
+  loadSelectionFromURL();
 
-    await loadSelectionFromURL();
+} else {
 
-  } else {
+  updateSelectedDisplay();
+  loadOccupiedSlots();
 
-    updateSelectedDisplay();
-    await loadOccupiedSlots();
-
-  }
-
-})();
+}
 
 
 document
@@ -897,7 +893,7 @@ document
   );
 
 
-  function loadSelectionFromURL() {
+  async function loadSelectionFromURL() {
   
     const params = new URLSearchParams(window.location.search);
   
