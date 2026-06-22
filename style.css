@@ -192,7 +192,7 @@ button{
 .court-header,
 .schedule-row{
   display:grid;
-  grid-template-columns:80px repeat(3,1fr);
+  grid-template-columns:110px repeat(3,1fr);
 }
 
 .court-header{
