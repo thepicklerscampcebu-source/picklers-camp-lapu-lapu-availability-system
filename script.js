@@ -117,10 +117,7 @@ function renderCalendar(){
     
     if (thisDate < today) {
     
-      div.style.background = "#f0f0f0";
-      div.style.color = "#999";
-      div.style.opacity = "0.7";
-      div.style.cursor = "not-allowed";
+      div.classList.add("past-slot");
     
     }
     else {
@@ -148,29 +145,6 @@ function renderCalendar(){
       };
     
     }
-
-    div.onclick = function(){
-
-      document.querySelectorAll(".day")
-        .forEach(d=>d.classList.remove("selected-day"));
-
-      div.classList.add("selected-day");
-
-      clearSelection();
-      
-      // STORE SELECTED DATE
-      selectedDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        day
-      );
-
-      document.getElementById("bookingWarning").innerText = "";
-
-      loadOccupiedSlots();
-      updateSelectedDisplay();
-      
-    };
 
     calendarDays.appendChild(div);
 
@@ -496,7 +470,7 @@ function isPastSlot(hour) {
     0
   );
 
-  return slotStart <= now;
+  return slotStart < now;
 
 }
 
