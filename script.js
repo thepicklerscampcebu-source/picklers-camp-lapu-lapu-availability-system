@@ -110,8 +110,6 @@ function renderCalendar(){
       div.classList.add("selected-day");
     }
 
-
-    const today = new Date();
     today.setHours(0,0,0,0);
     
     const thisDate = new Date(year, month, day);
