@@ -458,7 +458,7 @@ button{
 
   .court-header,
   .schedule-row{
-    grid-template-columns:65px repeat(3,1fr);
+    grid-template-columns:80px repeat(3,1fr);
   }
 
 
