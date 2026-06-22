@@ -3,6 +3,7 @@ let selectedDate = new Date();
 let startHour = null;
 let endHour = null;
 
+
 let selectedCourts = [];
 
 let occupiedSlots = [];
