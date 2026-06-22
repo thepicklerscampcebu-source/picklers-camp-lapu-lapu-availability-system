@@ -3,8 +3,6 @@ let selectedDate = new Date();
 let selectedSlots = []; 
 // each item: { court: "Court 1", hour: 14 }
 
-let selectedCourts = [];
-
 let occupiedSlots = [];
 
 // customer info coming from test.html
@@ -554,38 +552,19 @@ document
 
       }
 
-      if(
-        getSelectedHours().length === 0
-      ){
-
-        document.getElementById(
-          "bookingWarning"
-        ).innerText =
-          "Please select a time slot.";
-
+      if (selectedSlots.length === 0) {
+      
+        document.getElementById("bookingWarning").innerText = "Please select a time slot.";
         return;
-
-      }
-
-      if(
-        selectedCourts.length === 0
-      ){
-
-        document.getElementById(
-          "bookingWarning"
-        ).innerText =
-          "Please select a court.";
-
-        return;
-
+      
       }
 
       // everything valid
-      document.getElementById(
-        "bookingWarning"
-      ).innerText = "";
+      document.getElementById("bookingWarning").innerText = "";
 
       // Build court text
+      const selectedCourts = [...new Set(selectedSlots.map(slot => slot.court))];
+    
       const sortedCourts = sortCourts(selectedCourts);
       
       let courtText = "";
@@ -597,48 +576,27 @@ document
       }
       else if (sortedCourts.length === 2) {
       
-        courtText =
-          sortedCourts[0]
-          + " and "
-          + sortedCourts[1];
+        courtText = sortedCourts[0] + " and " + sortedCourts[1];
       
       }
       else {
       
-        courtText =
-          "Court 1, Court 2, and Court 3";
+        courtText = "Court 1, Court 2, and Court 3";
       
       }
       
       
       // YYYY-MM-DD
-      const yyyy =
-        selectedDate.getFullYear();
-      
-      const mm =
-        String(selectedDate.getMonth()+1)
-          .padStart(2,"0");
-      
-      const dd =
-        String(selectedDate.getDate())
-          .padStart(2,"0");
-      
-      const formattedDate =
-        `${yyyy}-${mm}-${dd}`;
-      
-      
-      // duration
-      const duration =
-        Math.max(startHour, endHour ?? startHour)
-        -
-        Math.min(startHour, endHour ?? startHour)
-        +
-        1;
-      
-      
-      // start hour
-      const firstHour =
-        Math.min(startHour, endHour ?? startHour);
+      const yyyy = selectedDate.getFullYear();
+      const mm = String(selectedDate.getMonth()+1).padStart(2,"0");
+      const dd = String(selectedDate.getDate()).padStart(2,"0");
+      const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+
+      // This is only temporary until Phase 2
+      const selectedHours = selectedSlots.map(slot => slot.hour).sort((a,b)=>a-b);
+      const firstHour = selectedHours[0];
+      const duration = selectedHours.length;
       
       
       // redirect
@@ -699,27 +657,39 @@ document
   
     });
   
-    // Restore hours
-    startHour = Number(timeIn);
-    endHour = startHour + Number(duration) - 1;
-  
-    // Restore courts
-    selectedCourts = court
+    selectedSlots = [];
+    
+    const courts = court
       .replace(", and ", ", ")
       .split(",")
       .map(c => c.trim())
       .filter(Boolean);
-  
-      document.getElementById("bookingWarning").innerText = "";
-      repaintGrid();
-      updateSummary();
-
-      console.log("Restored customer information:", {
-        bookingEmail,
-        bookingConfirmEmail,
-        bookingName,
-        bookingContact,
-        bookingAddress
+    
+    for(let h = Number(timeIn);
+        h < Number(timeIn) + Number(duration);
+        h++) {
+    
+      courts.forEach(c => {
+    
+        selectedSlots.push({
+          court: c,
+          hour: h
+        });
+    
       });
+    
+    }
+  
+    document.getElementById("bookingWarning").innerText = "";
+    repaintGrid();
+    updateSummary();
+
+    console.log("Restored customer information:", {
+      bookingEmail,
+      bookingConfirmEmail,
+      bookingName,
+      bookingContact,
+      bookingAddress
+    });
   
   }
