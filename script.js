@@ -1,8 +1,7 @@
 let currentDate = new Date();
 let selectedDate = new Date();
-let startHour = null;
-let endHour = null;
-
+let selectedSlots = []; 
+// each item: { court: "Court 1", hour: 14 }
 
 let selectedCourts = [];
 
@@ -188,60 +187,9 @@ function updateSelectedDisplay(){
 }
 
 
-
-function getSelectedHours(){
-
-  if(startHour === null){
-    return [];
-  }
-
-  if(endHour === null){
-    return [startHour];
-  }
-
-  const minHour =
-    Math.min(startHour, endHour);
-
-  const maxHour =
-    Math.max(startHour, endHour);
-
-  let hours = [];
-
-  for(let h = minHour; h <= maxHour; h++){
-
-    hours.push(h);
-
-  }
-
-  return hours;
-
+function isSlotSelected(court, hour) {
+  return selectedSlots.some(s => s.court === court && s.hour === hour);
 }
-
-
-
-
-function areConsecutive(hours){
-
-  if(hours.length <= 1){
-    return true;
-  }
-
-  const sorted =
-    [...hours].sort((a,b)=>a-b);
-
-  for(let i=1; i<sorted.length; i++){
-
-    if(sorted[i] !== sorted[i-1] + 1){
-      return false;
-    }
-
-  }
-
-  return true;
-
-}
-
-
 
 
 function repaintGrid(){
@@ -256,19 +204,10 @@ function repaintGrid(){
       const court =
         cell.dataset.court;
 
-      if(
-        getSelectedHours().includes(hour)
-        &&
-        selectedCourts.includes(court)
-      ){
-
+      if (isSlotSelected(court, hour)) {
         cell.classList.add("selected");
-
-      }
-      else{
-
+      } else {
         cell.classList.remove("selected");
-
       }
 
     });
@@ -277,99 +216,45 @@ function repaintGrid(){
 
 
 
-function clearSelection(){
-
-  startHour = null;
-  endHour = null;
-
-  selectedCourts = [];
-
+function clearSelection() {
+  selectedSlots = [];
   document.getElementById("bookingWarning").innerText = "";
   repaintGrid();
   updateSummary();
-
 }
 
 
 
-function updateSummary(){
+function updateSummary() {
 
-  if(
-    getSelectedHours().length===0
-  ){
+  if (selectedSlots.length === 0) {
 
-    if(selectedDate){
-
-      updateSelectedDisplay();
-    
-    }
-    else{
-    
-      document.getElementById("selectedDate").innerText = "Date:";
-    
-    }
+    updateSelectedDisplay();
 
     document.getElementById("selectedCourt").innerText = "Court:";
-
     document.getElementById("selectedTime").innerText = "Time:";
-
     document.getElementById("selectedDuration").innerText = "Duration:";
 
     return;
-
   }
 
+  const courts = [...new Set(selectedSlots.map(s => s.court))];
+  const hours = selectedSlots.map(s => s.hour).sort((a,b)=>a-b);
 
-  const sortedHours = getSelectedHours();
+  const firstHour = hours[0];
+  const lastHour = hours[hours.length - 1] + 1;
 
-  const firstHour =
-    Math.min(startHour, endHour ?? startHour);
-  
-  const finalHour =
-    Math.max(startHour, endHour ?? startHour) + 1;
+  document.getElementById("selectedCourt").innerText =
+    "Court: " + sortCourts(courts).join(", ");
 
-  document
-    .getElementById(
-      "selectedCourt"
-    )
-    .innerText =
-    "Court: "
-    +
-    sortCourts(selectedCourts).join(", ");
+  document.getElementById("selectedTime").innerText =
+    "Time: " + hourToText(firstHour) + " - " + hourToText(lastHour);
 
-  document
-    .getElementById(
-      "selectedTime"
-    )
-    .innerText =
-    "Time: "
-    +
-    (hourToText(firstHour))
-    +
-    " - "
-    +
-    (hourToText(finalHour))
-
-  const duration =
-  finalHour - firstHour;
-
-document
-  .getElementById(
-    "selectedDuration"
-  )
-  .innerText =
-  "Duration: "
-  +
-  duration
-  +
-  (
-    duration === 1
-      ? " hour"
-      : " hours"
-  );
+  document.getElementById("selectedDuration").innerText =
+    "Duration: " + selectedSlots.length +
+    (selectedSlots.length === 1 ? " slot" : " slots");
 
   updateSelectedDisplay();
-
 }
 
 
@@ -566,159 +451,39 @@ function generateGrid(){
       cell.dataset.hour = hour;
 
       cell.addEventListener("click", () => {
-
+      
         if (
-            cell.classList.contains("occupied") ||
-            cell.classList.contains("past-slot") ||
-            cell.classList.contains("closed-slot")
+          cell.classList.contains("occupied") ||
+          cell.classList.contains("past-slot") ||
+          cell.classList.contains("closed-slot")
         ) {
-            return;
+          return;
         }
-
-        if (selectedDate === null) {
-        
+      
+        if (!selectedDate) {
           document.getElementById("bookingWarning").innerText =
             "Please select a date.";
-        
           return;
-        
         }
       
-        const hour =
-          parseInt(cell.dataset.hour);
+        const court = cell.dataset.court;
+        const hour = Number(cell.dataset.hour);
       
-        const court =
-          cell.dataset.court;
+        const index = selectedSlots.findIndex(s =>
+          s.court === court && s.hour === hour
+        );
       
-      
-        // FIRST COURT
-        if(selectedCourts.length === 0){
-      
-          selectedCourts.push(court);
-      
-        }
-
-
-        // REMOVE COURT
-        if(selectedCourts.includes(court) && selectedCourts.length > 1){
-        
-          selectedCourts = selectedCourts.filter(c => c !== court);
-        
-          document.getElementById("bookingWarning").innerText = "";
-          repaintGrid();
-          updateSummary();
-        
-          return;
-        
-        }
-    
-      
-        // SAME COURT
-        if(selectedCourts.includes(court)){
-        
-          // FIRST CLICK
-          if(startHour === null){
-        
-            startHour = hour;
-            endHour = null;
-        
-          }
-        
-          // SINGLE SLOT RECLICK → CLEAR
-          else if(endHour === null && startHour === hour){
-        
-            clearSelection();
-        
-          }
-        
-          // SECOND CLICK → CREATE RANGE
-          else if(endHour === null){
-        
-            endHour = hour;
-        
-          }
-        
-          // RANGE ALREADY EXISTS
-          else if(endHour !== null){
-          
-            const rangeStart = Math.min(startHour, endHour);
-          
-            const rangeEnd = Math.max(startHour, endHour);
-          
-          
-            // User clicked actual END of range
-            if(hour === rangeEnd){
-          
-              // only two slots left
-              if(rangeEnd - rangeStart === 1){
-          
-                startHour = rangeStart;
-                endHour = null;
-          
-              }
-              else{
-          
-                // preserve original direction
-                if(startHour > endHour){
-          
-                  startHour--;
-          
-                }
-                else{
-          
-                  endHour--;
-          
-                }
-          
-              }
-          
-            }
-          
-          
-            // User clicked actual START of range
-            else if(hour === rangeStart){
-          
-              clearSelection();
-          
-            }
-          
-          
-            // User clicked somewhere inside the range
-            else{
-          
-              startHour = hour;
-              endHour = null;
-          
-              selectedCourts = [court];
-          
-            }
-          
-          }
-        
-          // START NEW RANGE
-          else{
-        
-            startHour = hour;
-            endHour = null;
-        
-            selectedCourts = [court];
-        
-          }
-        
-        }
-      
-      
-        // ADD OR REMOVE COURT
-        else{
-        
-          selectedCourts.push(court);
-        
+        // TOGGLE behavior
+        if (index >= 0) {
+          selectedSlots.splice(index, 1); // deselect
+        } else {
+          selectedSlots.push({ court, hour }); // select
         }
       
         document.getElementById("bookingWarning").innerText = "";
+      
         repaintGrid();
         updateSummary();
-      
       });
 
       row.appendChild(cell);
