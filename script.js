@@ -109,6 +109,46 @@ function renderCalendar(){
       div.classList.add("selected-day");
     }
 
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    
+    const thisDate = new Date(year, month, day);
+    
+    if (thisDate < today) {
+    
+      div.style.background = "#f0f0f0";
+      div.style.color = "#999";
+      div.style.opacity = "0.7";
+      div.style.cursor = "not-allowed";
+    
+    }
+    else {
+    
+      div.onclick = function(){
+    
+        document.querySelectorAll(".day")
+          .forEach(d => d.classList.remove("selected-day"));
+    
+        div.classList.add("selected-day");
+    
+        clearSelection();
+    
+        selectedDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          day
+        );
+    
+        document.getElementById("bookingWarning").innerText = "";
+    
+        loadOccupiedSlots();
+        updateSelectedDisplay();
+    
+      };
+    
+    }
+
     div.onclick = function(){
 
       document.querySelectorAll(".day")
@@ -440,6 +480,28 @@ async function loadOccupiedSlots() {
 
 
 
+function isPastSlot(hour) {
+
+  if (!selectedDate) return false;
+
+  const now = new Date();
+
+  const slotStart = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    selectedDate.getDate(),
+    hour % 24,
+    0,
+    0,
+    0
+  );
+
+  return slotStart <= now;
+
+}
+
+
+
 function generateGrid(){
 
   const grid =
@@ -476,6 +538,7 @@ function generateGrid(){
       cell.classList.add("slot");
 
       const occupied = findOccupiedSlot(court, hour);
+      const pastSlot = isPastSlot(hour);
 
       if (occupied) {
         console.log(
@@ -492,6 +555,11 @@ function generateGrid(){
         cell.innerText = occupied.name;
       
       }
+      else if (pastSlot) {
+      
+        cell.classList.add("past-slot");
+      
+      }
 
       cell.dataset.court = court;
       cell.dataset.time = formatHour(hour);
@@ -499,8 +567,11 @@ function generateGrid(){
 
       cell.addEventListener("click", () => {
 
-        if (cell.classList.contains("occupied")) {
-          return;
+        if (
+            cell.classList.contains("occupied") ||
+            cell.classList.contains("past-slot")
+        ) {
+            return;
         }
 
         if (selectedDate === null) {
