@@ -562,21 +562,6 @@ document
       
         });
 
-      document
-        .getElementById("clearBtn")
-        .addEventListener("click", function () {
-      
-          selectedSlots = [];
-      
-          document.getElementById(
-            "bookingWarning"
-          ).innerText = "";
-      
-          repaintGrid();
-          updateSummary();
-      
-        });
-
       
       // redirect
       window.location.href = "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html"
@@ -591,6 +576,11 @@ document
 
     }
   );
+
+
+  document
+    .getElementById("clearBtn")
+    .addEventListener("click", clearSelection);
 
 
   async function loadSelectionFromURL() {
