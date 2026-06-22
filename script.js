@@ -1,5 +1,5 @@
 let currentDate = new Date();
-let selectedDate = null;
+let selectedDate = new Date();
 let startHour = null;
 let endHour = null;
 
@@ -97,6 +97,16 @@ function renderCalendar(){
       year===today.getFullYear()
     ){
       div.classList.add("today");
+    }
+
+    // Highlight currently selected date
+    if (
+      selectedDate &&
+      day === selectedDate.getDate() &&
+      month === selectedDate.getMonth() &&
+      year === selectedDate.getFullYear()
+    ) {
+      div.classList.add("selected-day");
     }
 
     div.onclick = function(){
@@ -668,7 +678,22 @@ document.getElementById("nextMonth").onclick = function(){
 };
 
 renderCalendar();
-loadSelectionFromURL();
+
+if (
+  window.location.search &&
+  new URLSearchParams(window.location.search).has("date")
+) {
+
+  // Returning from test.html
+  loadSelectionFromURL();
+
+} else {
+
+  // First page load → use today's date
+  updateSelectedDisplay();
+  loadOccupiedSlots();
+
+}
 
 
 document
