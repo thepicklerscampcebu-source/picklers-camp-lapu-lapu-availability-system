@@ -560,7 +560,22 @@ document
       
           return a.hour - b.hour;
       
-      });
+        });
+
+      document
+        .getElementById("clearBtn")
+        .addEventListener("click", function () {
+      
+          selectedSlots = [];
+      
+          document.getElementById(
+            "bookingWarning"
+          ).innerText = "";
+      
+          repaintGrid();
+          updateSummary();
+      
+        });
 
       
       // redirect
