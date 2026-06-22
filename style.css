@@ -168,6 +168,18 @@ button{
 }
 
 
+.slot.past-slot{
+
+  background:#f0f0f0;
+  color:#999;
+
+  opacity:0.7;
+
+  cursor:not-allowed;
+
+}
+
+
 .calendar{
   border:1px solid #ddd;
   border-radius:15px;
