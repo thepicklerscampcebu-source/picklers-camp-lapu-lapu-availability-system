@@ -751,21 +751,23 @@ document.getElementById("nextMonth").onclick = function(){
 
 renderCalendar();
 
-if (
-  window.location.search &&
-  new URLSearchParams(window.location.search).has("date")
-) {
+(async () => {
 
-  // Returning from test.html
-  loadSelectionFromURL();
+  if (
+    window.location.search &&
+    new URLSearchParams(window.location.search).has("date")
+  ) {
 
-} else {
+    await loadSelectionFromURL();
 
-  // First page load → use today's date
-  updateSelectedDisplay();
-  loadOccupiedSlots();
+  } else {
 
-}
+    updateSelectedDisplay();
+    await loadOccupiedSlots();
+
+  }
+
+})();
 
 
 document
@@ -921,7 +923,9 @@ document
     currentDate = new Date(selectedDate);
   
     renderCalendar();
-    loadOccupiedSlots();
+    
+    // Wait until occupied slots are loaded
+    await loadOccupiedSlots();
   
     // Highlight selected day
     document.querySelectorAll(".day").forEach(d => {
