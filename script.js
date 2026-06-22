@@ -159,27 +159,28 @@ function renderCalendar(){
 
 function updateSelectedDisplay(){
 
-  const courtEl =
-    document.getElementById("selectedCourt");
-
-  const timeEl =
-    document.getElementById("selectedTime");
-
-  const dateEl =
-    document.getElementById("selectedDate");
+  const dateEl = document.getElementById("selectedDate");
 
   if(!dateEl) return;
 
   if(selectedDate){
-    const formatted =
-      selectedDate.toLocaleDateString('en-US',{
-        weekday:'short',
-        year:'numeric',
-        month:'short',
-        day:'numeric'
-      });
+
+    const formatted = selectedDate.toLocaleDateString('en-US',
+        {
+          weekday:'short',
+          year:'numeric',
+          month:'short',
+          day:'numeric'
+        }
+      );
 
     dateEl.innerText = "Date: " + formatted;
+
+  }
+  else {
+
+    dateEl.innerText = "Date:";
+
   }
 
 }
@@ -225,44 +226,8 @@ function clearSelection() {
 
 function updateSummary() {
 
-  if (selectedSlots.length === 0) {
-
-    updateSelectedDisplay();
-
-    document.getElementById("selectedCourt").innerText = "Court:";
-    document.getElementById("selectedTime").innerText = "Time:";
-    document.getElementById("selectedDuration").innerText = "Duration:";
-
-    return;
-  }
-
-  // unique courts
-  const courts =
-    [...new Set(selectedSlots.map(s => s.court))];
-
-  // unique hours
-  const hours =
-    [...new Set(selectedSlots.map(s => s.hour))]
-      .sort((a,b)=>a-b);
-
-  const firstHour = hours[0];
-  const lastHour = hours[hours.length - 1] + 1;
-
-  document.getElementById("selectedCourt").innerText =
-    "Court: " + sortCourts(courts).join(", ");
-
-  document.getElementById("selectedTime").innerText =
-    "Time: "
-    + hourToText(firstHour)
-    + " - "
-    + hourToText(lastHour);
-
-  document.getElementById("selectedDuration").innerText =
-    "Duration: "
-    + hours.length
-    + (hours.length === 1 ? " hour" : " hours");
-
   updateSelectedDisplay();
+  document.getElementById("selectedDuration").innerText = "Number of Slots Selected: " + selectedSlots.length;
 
 }
 
@@ -572,29 +537,6 @@ document
 
       // everything valid
       document.getElementById("bookingWarning").innerText = "";
-
-      // Build court text
-      const selectedCourts = [...new Set(selectedSlots.map(slot => slot.court))];
-    
-      const sortedCourts = sortCourts(selectedCourts);
-      
-      let courtText = "";
-      
-      if (sortedCourts.length === 1) {
-      
-        courtText = sortedCourts[0];
-      
-      }
-      else if (sortedCourts.length === 2) {
-      
-        courtText = sortedCourts[0] + " and " + sortedCourts[1];
-      
-      }
-      else {
-      
-        courtText = "Court 1, Court 2, and Court 3";
-      
-      }
       
       
       // YYYY-MM-DD
@@ -604,18 +546,27 @@ document
       const formattedDate = `${yyyy}-${mm}-${dd}`;
 
 
-      // This is only temporary until Phase 2
-      const selectedHours = selectedSlots.map(slot => slot.hour).sort((a,b)=>a-b);
-      const firstHour = selectedHours[0];
-      const duration = selectedHours.length;
+      const sortedSlots = [...selectedSlots].sort((a, b) => {
       
+          const order = {
+            "Court 1": 1,
+            "Court 2": 2,
+            "Court 3": 3
+          };
+      
+          if (order[a.court] !== order[b.court]) {
+            return order[a.court] - order[b.court];
+          }
+      
+          return a.hour - b.hour;
+      
+      });
+
       
       // redirect
       window.location.href = "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html"
         + "?date=" + encodeURIComponent(formattedDate)
-        + "&court=" + encodeURIComponent(courtText)
-        + "&timeIn=" + firstHour
-        + "&duration=" + duration
+        + "&slots=" + encodeURIComponent(JSON.stringify(sortedSlots))
       
         + "&email=" + encodeURIComponent(bookingEmail)
         + "&confirmEmail=" + encodeURIComponent(bookingConfirmEmail)
@@ -632,9 +583,7 @@ document
     const params = new URLSearchParams(window.location.search);
   
     const date = params.get("date");
-    const court = params.get("court");
-    const timeIn = params.get("timeIn");
-    const duration = params.get("duration");
+    const slots = JSON.parse(decodeURIComponent(params.get("slots") || "[]"));
 
     bookingEmail = decodeURIComponent(params.get("email") || "");
     bookingConfirmEmail = decodeURIComponent(params.get("confirmEmail") || "");
@@ -642,7 +591,7 @@ document
     bookingContact = decodeURIComponent(params.get("contact") || "");
     bookingAddress = decodeURIComponent(params.get("address") || "");
   
-    if (!date || timeIn === null || duration === null) {
+    if (!date) {
       return;
     }
   
@@ -668,28 +617,7 @@ document
   
     });
   
-    selectedSlots = [];
-    
-    const courts = court
-      .replace(", and ", ", ")
-      .split(",")
-      .map(c => c.trim())
-      .filter(Boolean);
-    
-    for(let h = Number(timeIn);
-        h < Number(timeIn) + Number(duration);
-        h++) {
-    
-      courts.forEach(c => {
-    
-        selectedSlots.push({
-          court: c,
-          hour: h
-        });
-    
-      });
-    
-    }
+    selectedSlots = slots;
   
     document.getElementById("bookingWarning").innerText = "";
     repaintGrid();
