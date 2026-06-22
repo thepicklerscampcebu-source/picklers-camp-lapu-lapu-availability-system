@@ -474,6 +474,12 @@ function isPastSlot(hour) {
 }
 
 
+function isClosedHour(hour){
+
+  return hour >= 2 && hour < 7;
+
+}
+
 
 function generateGrid(){
 
@@ -484,7 +490,7 @@ function generateGrid(){
 
   const courts = ["Court 1", "Court 2", "Court 3"];
 
-  for(let hour = 7; hour <= 25; hour++){
+  for(let hour = 0; hour <= 23; hour++){
 
     const row =
       document.createElement("div");
@@ -512,6 +518,7 @@ function generateGrid(){
 
       const occupied = findOccupiedSlot(court, hour);
       const pastSlot = isPastSlot(hour);
+      const closedHour = isClosedHour(hour);
 
       if (occupied) {
         console.log(
@@ -528,9 +535,22 @@ function generateGrid(){
         cell.innerText = occupied.name;
       
       }
+      else if (closedHour) {
+      
+        cell.classList.add("closed-slot");
+        cell.innerText = "CLOSED";
+      
+      }
       else if (pastSlot) {
       
         cell.classList.add("past-slot");
+        cell.innerText = "PAST";
+      
+      }
+      else {
+      
+        cell.classList.add("available-slot");
+        cell.innerText = "AVAILABLE";
       
       }
 
@@ -542,7 +562,8 @@ function generateGrid(){
 
         if (
             cell.classList.contains("occupied") ||
-            cell.classList.contains("past-slot")
+            cell.classList.contains("past-slot") ||
+            cell.classList.contains("closed-slot")
         ) {
             return;
         }
