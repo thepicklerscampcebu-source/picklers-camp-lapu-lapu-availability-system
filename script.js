@@ -26,10 +26,25 @@ function sortCourts(courts) {
 
 function findOccupiedSlot(court, hour) {
 
-  return occupiedSlots.find(slot =>
+  const targetHour = hour % 24;
+
+  const found = occupiedSlots.find(slot =>
     slot.court === court &&
-    slot.hour === (hour % 24)
+    Number(slot.hour) === targetHour
   );
+
+  if (found) {
+
+    console.log(
+      "MATCH",
+      court,
+      targetHour,
+      found
+    );
+
+  }
+
+  return found;
 
 }
 
