@@ -3,11 +3,16 @@ body{
   margin:20px;
 }
 
+html,
+body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
 .container{
   display:flex;
   gap:40px;
   align-items:flex-start;
-  flex-wrap:nowrap; /* 🔥 FORCE SIDE BY SIDE */
 }
 
 .left-panel{
@@ -88,10 +93,7 @@ button{
   flex-direction:column;
   gap:10px;
 
-  max-width:100%;
-  min-width:700px;
-
-  overflow-x:auto;
+  width:100%;
 }
 
 
@@ -187,12 +189,13 @@ button{
   color:#2d6cdf;
 }
 
-
+.court-header,
+.schedule-row{
+  display:grid;
+  grid-template-columns:80px repeat(3,1fr);
+}
 
 .court-header{
-  display:grid;
-  grid-template-columns:110px repeat(3, minmax(100px, 1fr));
-
   font-size:12px;
   font-weight:bold;
   color:#666;
@@ -211,8 +214,6 @@ button{
 }
 
 .schedule-row{
-  display:grid;
-  grid-template-columns:110px repeat(3, minmax(100px, 1fr));
   align-items:center;
   text-align:center;
 }
@@ -454,14 +455,10 @@ button{
   width:100%;
   }
 
-  .schedule-wrapper{
-    min-width:650px;
-    -webkit-overflow-scrolling: touch;
-  }
 
   .court-header,
   .schedule-row{
-    grid-template-columns:110px repeat(3, 90px);
+    grid-template-columns:65px repeat(3,1fr);
   }
 
 
@@ -470,13 +467,12 @@ button{
   top:0;
   }
 
-  .time-label{
-    font-size:11px;
-    white-space: nowrap;
-  }
-
   .slot{
-    height:34px;
+    font-size:10px;
+  }
+  
+  .time-label{
+    font-size:10px;
   }
 
 }
