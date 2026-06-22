@@ -282,6 +282,8 @@ button{
 
     border: 1px solid #d3d3d3;
 
+    cursor:not-allowed;
+
     opacity: 1;
 
     cursor: not-allowed;
@@ -321,6 +323,8 @@ button{
     color: #808080;
 
     border: 1px solid #c7c7c7;
+
+    cursor:not-allowed;
 
     cursor: not-allowed;
     pointer-events: none;
