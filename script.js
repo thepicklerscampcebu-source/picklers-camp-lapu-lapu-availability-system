@@ -8,6 +8,13 @@ let selectedCourts = [];
 
 let occupiedSlots = [];
 
+// customer info coming from test.html
+let bookingEmail = "";
+let bookingConfirmEmail = "";
+let bookingName = "";
+let bookingContact = "";
+let bookingAddress = "";
+
 // Apps Script Web App URL
 const webAppUrl = "https://script.google.com/macros/s/AKfycbzGreoLN4DfcMPG_8E05DetWeJp29gthoblv9LFSysiCATD-SQHimYAYGLVQCB4nhcwzg/exec";
 
@@ -872,20 +879,17 @@ document
       
       
       // redirect
-      window.location.href =
-        "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html"
-        +
-        "?date="
-        + encodeURIComponent(formattedDate)
-        +
-        "&court="
-        + encodeURIComponent(courtText)
-        +
-        "&timeIn="
-        + firstHour
-        +
-        "&duration="
-        + duration;
+      window.location.href = "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html"
+        + "?date=" + encodeURIComponent(formattedDate)
+        + "&court=" + encodeURIComponent(courtText)
+        + "&timeIn=" + firstHour
+        + "&duration=" + duration
+      
+        + "&email=" + encodeURIComponent(bookingEmail)
+        + "&confirmEmail=" + encodeURIComponent(bookingConfirmEmail)
+        + "&name=" + encodeURIComponent(bookingName)
+        + "&contact=" + encodeURIComponent(bookingContact)
+        + "&address=" + encodeURIComponent(bookingAddress);
 
     }
   );
@@ -899,6 +903,12 @@ document
     const court = params.get("court");
     const timeIn = params.get("timeIn");
     const duration = params.get("duration");
+
+    bookingEmail = decodeURIComponent(params.get("email") || "");
+    bookingConfirmEmail = decodeURIComponent(params.get("confirmEmail") || "");
+    bookingName = decodeURIComponent(params.get("name") || "");
+    bookingContact = decodeURIComponent(params.get("contact") || "");
+    bookingAddress = decodeURIComponent(params.get("address") || "");
   
     if (!date || timeIn === null || duration === null) {
       return;
@@ -938,5 +948,13 @@ document
       document.getElementById("bookingWarning").innerText = "";
       repaintGrid();
       updateSummary();
+
+      console.log("Restored customer information:", {
+        bookingEmail,
+        bookingConfirmEmail,
+        bookingName,
+        bookingContact,
+        bookingAddress
+      });
   
   }
