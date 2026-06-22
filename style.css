@@ -142,12 +142,18 @@ button{
 }
 
 .slot:hover{
-  background:#d9f7be;
+  background:#d4f5d8;
 }
 
 .slot.selected{
+
   background:#52c41a;
   color:white;
+
+  border:2px solid #3d9413;
+
+  font-weight:bold;
+
 }
 
 
@@ -155,6 +161,8 @@ button{
 
   background:#d9534f;
   color:white;
+
+  border:1px solid #c6423e;
 
   cursor:not-allowed;
 
@@ -170,14 +178,18 @@ button{
 
 .past-slot{
 
-    background: #f7f7f7;
-    color: #9b9b9b;
-    border: 1px solid #d5d5d5;
-    opacity: 0.9;
+    background: #f1f1f1;
+    color: #9a9a9a;
+
+    border: 1px solid #d3d3d3;
+
+    opacity: 1;
+
     cursor: not-allowed;
     pointer-events: none;
-    font-size: 11px;
-    font-weight: 500;
+
+    font-size:11px;
+    font-weight:500;
 
     display:flex;
     align-items:center;
@@ -189,36 +201,38 @@ button{
 
 .available-slot{
 
-    background: #ffffff;
-    color: #888;
-    border: 1px solid #d9d9d9;
+    background: #edf9ef;
+    color: #3d7a4b;
+
+    border: 1px solid #b7e4c0;
 
     font-size:11px;
+    font-weight:600;
 
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
-
 
 }
 
-
 .closed-slot{
 
-    background: #ececec;
-    color: #8a8a8a;
-    border: 1px solid #d0d0d0;
+    background: #e2e2e2;
+    color: #808080;
+
+    border: 1px solid #c7c7c7;
+
     cursor: not-allowed;
     pointer-events: none;
-    font-size: 11px;
-    font-weight: 600;
+
+    font-size:11px;
+    font-weight:600;
 
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
-
 
 }
 
