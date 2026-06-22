@@ -236,8 +236,14 @@ function updateSummary() {
     return;
   }
 
-  const courts = [...new Set(selectedSlots.map(s => s.court))];
-  const hours = selectedSlots.map(s => s.hour).sort((a,b)=>a-b);
+  // unique courts
+  const courts =
+    [...new Set(selectedSlots.map(s => s.court))];
+
+  // unique hours
+  const hours =
+    [...new Set(selectedSlots.map(s => s.hour))]
+      .sort((a,b)=>a-b);
 
   const firstHour = hours[0];
   const lastHour = hours[hours.length - 1] + 1;
@@ -246,13 +252,18 @@ function updateSummary() {
     "Court: " + sortCourts(courts).join(", ");
 
   document.getElementById("selectedTime").innerText =
-    "Time: " + hourToText(firstHour) + " - " + hourToText(lastHour);
+    "Time: "
+    + hourToText(firstHour)
+    + " - "
+    + hourToText(lastHour);
 
   document.getElementById("selectedDuration").innerText =
-    "Duration: " + selectedSlots.length +
-    (selectedSlots.length === 1 ? " slot" : " slots");
+    "Duration: "
+    + hours.length
+    + (hours.length === 1 ? " hour" : " hours");
 
   updateSelectedDisplay();
+
 }
 
 
