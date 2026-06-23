@@ -12,7 +12,7 @@ let bookingName = "";
 let bookingContact = "";
 let bookingAddress = "";
 
-// Apps Script Web App URL
+// Apps Script Web App URL - USE LINK FOR TESTING IF ONGOING TROUBLESHOOTING: https://script.google.com/macros/s/AKfycbzGreoLN4DfcMPG_8E05DetWeJp29gthoblv9LFSysiCATD-SQHimYAYGLVQCB4nhcwzg/exec
 const webAppUrl = "https://script.google.com/macros/s/AKfycbzGreoLN4DfcMPG_8E05DetWeJp29gthoblv9LFSysiCATD-SQHimYAYGLVQCB4nhcwzg/exec";
 
 
@@ -574,8 +574,8 @@ document
         });
 
       
-      // redirect
-      window.location.href = "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html"
+      // redirect - USE TESTING LINK IF ONGOING TROUBLESHOOTING: https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/test.html
+      window.location.href = "https://thepicklerscampcebu-source.github.io/picklers-camp-lapu-lapu/"
         + "?date=" + encodeURIComponent(formattedDate)
         + "&slots=" + encodeURIComponent(JSON.stringify(sortedSlots))
       
