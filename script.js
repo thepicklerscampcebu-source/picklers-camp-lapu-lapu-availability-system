@@ -13,7 +13,7 @@ let bookingContact = "";
 let bookingAddress = "";
 
 // Apps Script Web App URL - USE LINK FOR TESTING IF ONGOING TROUBLESHOOTING: https://script.google.com/macros/s/AKfycbzGreoLN4DfcMPG_8E05DetWeJp29gthoblv9LFSysiCATD-SQHimYAYGLVQCB4nhcwzg/exec
-const webAppUrl = "https://script.google.com/macros/s/AKfycbzGreoLN4DfcMPG_8E05DetWeJp29gthoblv9LFSysiCATD-SQHimYAYGLVQCB4nhcwzg/exec";
+const webAppUrl = "https://script.google.com/macros/s/AKfycbwOFukRcUS77GBa_qWqjHy0xetCe_PYC_SUiMIF5rKFUBHdf_p4CyI22YkmHELII52OJw/exec"; //PROD RELEASE LINK: https://script.google.com/macros/s/AKfycbwOFukRcUS77GBa_qWqjHy0xetCe_PYC_SUiMIF5rKFUBHdf_p4CyI22YkmHELII52OJw/exec
 
 
 function sortCourts(courts) {
