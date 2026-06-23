@@ -397,8 +397,18 @@ function generateGrid(){
       
       if (occupied) {
       
-        cell.classList.add("occupied");
-        cell.innerText = occupied.name;
+        if (occupied.status === "Pending") {
+      
+          cell.classList.add("pending-slot");
+          cell.innerText = occupied.name + " - PENDING";
+      
+        }
+        else {
+      
+          cell.classList.add("occupied");
+          cell.innerText = occupied.name;
+      
+        }
       
       }
       else if (closedHour) {
@@ -428,6 +438,7 @@ function generateGrid(){
       
         if (
           cell.classList.contains("occupied") ||
+          cell.classList.contains("pending-slot") ||
           cell.classList.contains("past-slot") ||
           cell.classList.contains("closed-slot")
         ) {
