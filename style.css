@@ -276,6 +276,31 @@ button{
 }
 
 
+.slot.pending-slot{
+
+  background:#ffd966;
+  color:#333;
+
+  border:1px solid #e6b800;
+
+  cursor:not-allowed;
+
+  font-size:11px;
+  font-weight:600;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+
+  padding:2px;
+  line-height:1.2;
+  word-break:break-word;
+  overflow:hidden;
+
+}
+
+
 .past-slot{
 
     background: #f1f1f1;
