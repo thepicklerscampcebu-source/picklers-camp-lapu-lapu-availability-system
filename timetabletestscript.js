@@ -337,6 +337,9 @@ async function loadOccupiedSlots() {
 
     occupiedSlots = await response.json();
 
+    console.log("Server returned:", occupiedSlots);
+    console.log("Is array?", Array.isArray(occupiedSlots));
+
     console.log("Occupied slots:", occupiedSlots);
 
   }
