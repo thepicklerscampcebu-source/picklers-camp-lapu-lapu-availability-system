@@ -264,21 +264,6 @@ function formatHour(hour){
 
 
 
-function normalizeOperatingDate(date, hour) {
-
-  const d = new Date(date);
-
-  d.setHours(0,0,0,0);
-
-  if (hour <= 2) {
-    d.setDate(d.getDate() - 1);
-  }
-
-  return d;
-
-}
-
-
 function formatDateYYYYMMDD(date) {
 
   const yyyy = date.getFullYear();
@@ -324,9 +309,7 @@ async function loadOccupiedSlots() {
 
   }
 
-  const operatingDate = normalizeOperatingDate(selectedDate,7);
-  
-  const formattedDate = formatDateYYYYMMDD(operatingDate);
+  const formattedDate = formatDateYYYYMMDD(selectedDate);
   console.log("Requesting occupied slots for:", formattedDate);
 
   try {
