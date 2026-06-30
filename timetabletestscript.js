@@ -586,9 +586,7 @@ document
       
       
       // YYYY-MM-DD
-      const operatingDate = normalizeOperatingDate(selectedDate,getEarliestSelectedHour());
-      
-      const formattedDate = formatDateYYYYMMDD(operatingDate);
+      const formattedDate = formatDateYYYYMMDD(selectedDate);
 
       const sortedSlots = [...selectedSlots].sort((a, b) => {
       
