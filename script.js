@@ -250,8 +250,6 @@ function hourToText(hour){
 }
 
 
-
-
 function formatHour(hour){
 
   const start = hour % 12 || 12;
@@ -265,7 +263,41 @@ function formatHour(hour){
 }
 
 
+
+function formatDateYYYYMMDD(date) {
+
+  const yyyy = date.getFullYear();
+
+  const mm = String(
+    date.getMonth() + 1
+  ).padStart(2,"0");
+
+  const dd = String(
+    date.getDate()
+  ).padStart(2,"0");
+
+  return `${yyyy}-${mm}-${dd}`;
+
+}
+
+
+function getEarliestSelectedHour() {
+
+  if (selectedSlots.length === 0) {
+    return 7;
+  }
+
+  return Math.min(
+    ...selectedSlots.map(slot => slot.hour)
+  );
+
+}
+
+
 async function loadOccupiedSlots() {
+
+  console.log("selectedDate:", selectedDate);
+  console.log("selectedDate formatted:", formatDateYYYYMMDD(selectedDate));
 
   occupiedSlots = [];
 
@@ -277,18 +309,8 @@ async function loadOccupiedSlots() {
 
   }
 
-  const yyyy = selectedDate.getFullYear();
-
-  const mm =
-    String(selectedDate.getMonth() + 1)
-      .padStart(2, "0");
-
-  const dd =
-    String(selectedDate.getDate())
-      .padStart(2, "0");
-
-  const formattedDate =
-    `${yyyy}-${mm}-${dd}`;
+  const formattedDate = formatDateYYYYMMDD(selectedDate);
+  console.log("Requesting occupied slots for:", formattedDate);
 
   try {
 
@@ -301,6 +323,9 @@ async function loadOccupiedSlots() {
     });
 
     occupiedSlots = await response.json();
+
+    console.log("Server returned:", occupiedSlots);
+    console.log("Is array?", Array.isArray(occupiedSlots));
 
     console.log("Occupied slots:", occupiedSlots);
 
@@ -551,11 +576,7 @@ document
       
       
       // YYYY-MM-DD
-      const yyyy = selectedDate.getFullYear();
-      const mm = String(selectedDate.getMonth()+1).padStart(2,"0");
-      const dd = String(selectedDate.getDate()).padStart(2,"0");
-      const formattedDate = `${yyyy}-${mm}-${dd}`;
-
+      const formattedDate = formatDateYYYYMMDD(selectedDate);
 
       const sortedSlots = [...selectedSlots].sort((a, b) => {
       
@@ -612,7 +633,13 @@ document
     }
   
     // Restore date
-    selectedDate = new Date(date);
+    const [year, month, day] = date.split("-").map(Number);
+
+    selectedDate = new Date(
+      year,
+      month - 1,
+      day
+    );
   
     // Move calendar to correct month
     currentDate = new Date(selectedDate);
