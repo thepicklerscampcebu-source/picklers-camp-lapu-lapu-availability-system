@@ -296,6 +296,19 @@ function formatDateYYYYMMDD(date) {
 }
 
 
+function getEarliestSelectedHour() {
+
+  if (selectedSlots.length === 0) {
+    return 7;
+  }
+
+  return Math.min(
+    ...selectedSlots.map(slot => slot.hour)
+  );
+
+}
+
+
 async function loadOccupiedSlots() {
 
   occupiedSlots = [];
@@ -573,11 +586,9 @@ document
       
       
       // YYYY-MM-DD
-      const yyyy = selectedDate.getFullYear();
-      const mm = String(selectedDate.getMonth()+1).padStart(2,"0");
-      const dd = String(selectedDate.getDate()).padStart(2,"0");
-      const formattedDate = `${yyyy}-${mm}-${dd}`;
-
+      const operatingDate = normalizeOperatingDate(selectedDate,getEarliestSelectedHour());
+      
+      const formattedDate = formatDateYYYYMMDD(operatingDate);
 
       const sortedSlots = [...selectedSlots].sort((a, b) => {
       
