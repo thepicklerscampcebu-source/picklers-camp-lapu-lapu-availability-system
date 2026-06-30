@@ -250,8 +250,6 @@ function hourToText(hour){
 }
 
 
-
-
 function formatHour(hour){
 
   const start = hour % 12 || 12;
@@ -262,6 +260,39 @@ function formatHour(hour){
   const endPeriod = endHour < 12 ? "AM" : "PM";
 
   return `${start}${startPeriod} - ${end}${endPeriod}`;
+}
+
+
+
+function normalizeOperatingDate(date, hour) {
+
+  const d = new Date(date);
+
+  d.setHours(0,0,0,0);
+
+  if (hour <= 2) {
+    d.setDate(d.getDate() - 1);
+  }
+
+  return d;
+
+}
+
+
+function formatDateYYYYMMDD(date) {
+
+  const yyyy = date.getFullYear();
+
+  const mm = String(
+    date.getMonth() + 1
+  ).padStart(2,"0");
+
+  const dd = String(
+    date.getDate()
+  ).padStart(2,"0");
+
+  return `${yyyy}-${mm}-${dd}`;
+
 }
 
 
@@ -277,18 +308,9 @@ async function loadOccupiedSlots() {
 
   }
 
-  const yyyy = selectedDate.getFullYear();
-
-  const mm =
-    String(selectedDate.getMonth() + 1)
-      .padStart(2, "0");
-
-  const dd =
-    String(selectedDate.getDate())
-      .padStart(2, "0");
-
-  const formattedDate =
-    `${yyyy}-${mm}-${dd}`;
+  const operatingDate = normalizeOperatingDate(selectedDate,7);
+  
+  const formattedDate = formatDateYYYYMMDD(operatingDate);
 
   try {
 
@@ -612,7 +634,13 @@ document
     }
   
     // Restore date
-    selectedDate = new Date(date);
+    const [year, month, day] = date.split("-").map(Number);
+
+    selectedDate = new Date(
+      year,
+      month - 1,
+      day
+    );
   
     // Move calendar to correct month
     currentDate = new Date(selectedDate);
