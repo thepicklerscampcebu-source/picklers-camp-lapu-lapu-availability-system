@@ -311,6 +311,9 @@ function getEarliestSelectedHour() {
 
 async function loadOccupiedSlots() {
 
+  console.log("selectedDate:", selectedDate);
+  console.log("selectedDate formatted:", formatDateYYYYMMDD(selectedDate));
+
   occupiedSlots = [];
 
   if (!selectedDate) {
@@ -324,6 +327,7 @@ async function loadOccupiedSlots() {
   const operatingDate = normalizeOperatingDate(selectedDate,7);
   
   const formattedDate = formatDateYYYYMMDD(operatingDate);
+  console.log("Requesting occupied slots for:", formattedDate);
 
   try {
 
