@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Picklers Camp Availability
+  </title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="left-panel">
+
+    <div class="calendar">
+
+      <div class="calendar-header">
+
+        <button id="prevMonth">◀</button>
+
+        <h2 id="monthYear"></h2>
+
+        <button id="nextMonth">▶</button>
+
+      </div>
+
+      <div class="weekdays">
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+      </div>
+
+      <div id="calendarDays"></div>
+
+    </div>
+
+  </div>
+
+
+  <div class="right-panel">
+
+    <div class="booking-header">
+
+    <div class="booking-title">Booking Timetable</div>
+  
+    <div class="booking-subtitle">
+      Select preferred date and time slot to proceed with your booking!
+    </div>
+  
+    <div class="instruction-box">
+  
+      <div class="instruction-title">Booking Instructions:</div>
+  
+      <ul>
+        <li>Select a date in the calendar.</li>
+        <li>In the timetable, choose your preferred time slot. Click the slot again to deselect it.</li>
+        <li>Verify your selection in the Summary below.</li>
+        <li>Click <b>BOOK NOW</b> when ready.</li>
+        <li>NOTE: You cannot select <b>PAST</b>, <b>CLOSED</b>, <b>PENDING</b>, and <b>OCCUPIED</b> time slots. Occupied time slots are marked red.</li>
+      </ul>
+  
+    </div>
+  
+  </div>
+
+    <!-- 
+    <h2>Availability</h2> 
+    -->
+    
+    <div class="schedule-wrapper">
+    
+      <!-- COURT HEADER (sticky row) -->
+      <div class="court-header">
+        <div></div>
+        <div>Court 1</div>
+        <div>Court 2</div>
+        <div>Court 3</div>
+      </div>
+    
+      <!-- GRID CONTAINER -->
+      <div id="scheduleGrid"></div>
+    
+    </div>
+
+
+    <div class="summary">
+
+      <h3>Summary</h3>
+      
+      <p id="selectedDate">Date:</p>
+      
+      <p id="selectedDuration">
+        Number of Slots Selected: 0
+      </p>
+
+      <p id="bookingWarning"></p>
+
+      <div style="display:flex; gap:10px;">
+      
+        <button
+          type="button"
+          id="clearBtn"
+          style="
+            background:#ccc;
+            color:black;
+            flex:1;
+          ">
+          Clear
+        </button>
+      
+        <button
+          type="button"
+          id="bookNowBtn"
+          style="
+            background:#40b55c;
+            color:white;
+            flex:1;
+          ">
+          Book Now
+        </button>
+      
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
