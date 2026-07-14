@@ -365,9 +365,33 @@ function isPastSlot(hour) {
 }
 
 
-function isClosedHour(hour){
+function isClosedHour(hour) {
 
-  return hour >= 2 && hour < 7;
+  if (!selectedDate) return false;
+
+  const day = selectedDate.getDay();
+  // Sunday = 0
+  // Monday = 1
+  // Tuesday = 2
+  // Wednesday = 3
+  // Thursday = 4
+  // Friday = 5
+  // Saturday = 6
+
+  // 2AM - 7AM is ALWAYS closed
+  if (hour >= 2 && hour < 7) {
+    return true;
+  }
+
+  // Tuesday-Friday:
+  // also close 12AM-2AM
+  if (day >= 2 && day <= 5 && hour < 2) {
+    return true;
+  }
+
+  // Saturday-Monday:
+  // 12AM-2AM remains open
+  return false;
 
 }
 
