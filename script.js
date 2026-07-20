@@ -33,6 +33,10 @@ function findOccupiedSlot(court, hour) {
 
   const targetHour = hour % 24;
 
+  if (!Array.isArray(occupiedSlots)) {
+    return null;
+  }
+  
   const found = occupiedSlots.find(slot =>
     slot.court === court &&
     Number(slot.hour) === targetHour
@@ -322,7 +326,14 @@ async function loadOccupiedSlots() {
       })
     });
 
-    occupiedSlots = await response.json();
+    const result = await response.json();
+
+    if (!Array.isArray(result)) {
+        console.error("Unexpected response:", result);
+        occupiedSlots = [];
+    } else {
+        occupiedSlots = result;
+    }
 
     console.log("Server returned:", occupiedSlots);
     console.log("Is array?", Array.isArray(occupiedSlots));
