@@ -389,7 +389,7 @@ function isClosedHour(hour) {
   // Friday = 5
   // Saturday = 6
 
-  // 2AM - 7AM is ALWAYS closed
+  // 3AM - 7AM is ALWAYS closed
   if (hour >= 3 && hour < 7) {
     return true;
   }
