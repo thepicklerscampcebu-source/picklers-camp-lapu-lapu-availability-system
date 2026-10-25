@@ -394,6 +394,16 @@ function isClosedHour(hour) {
     return true;
   }
 
+  // Tuesday-Friday:
+  // also close 12AM-2AM
+  // if (day >= 2 && day <= 5 && hour < 2) {
+   // return true;
+ // }
+
+  // Saturday-Monday:
+  // 12AM-2AM remains open
+ // return false;
+
 }
 
 
